@@ -1,15 +1,31 @@
+var Sell = require("../model/sell.model");
+var CreateInvoice = require("../model/createInvoice.model");
+
 class SellController {
-  //[GET] /sell
-  sell(req, res) {
-    res.send("sell page");
+  // /sell/list
+  getAllInvoiceSale(req, res) {
+    Sell.get_all((data) => {
+      res.json(data);
+    });
   }
 
-  create(req, res) {
-    res.send("sell create");
+  getByDate(req, res) {
+    Sell.getByDate(dataReq, (response) => {
+      res.json(response);
+    });
   }
 
-  list(req, res) {
-    res.send("sell list");
+  deleteInvoice(req, res) {
+    Sell.delete(req.params.id, (response) => {
+      res.json(response);
+    });
+  }
+
+  // /sell/create
+  getListUnitByID(req, res) {
+    CreateInvoice.getListUnitByID(req.params.id, (data) => {
+      res.json(data);
+    });
   }
 }
 
