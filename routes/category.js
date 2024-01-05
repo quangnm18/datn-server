@@ -3,11 +3,36 @@ const router = express.Router();
 
 const categoryController = require("../controller/CategoryController");
 
-// /category/medicine
-router.get("/medicine/unit/all", categoryController.getUnitAll);
-router.put("/medicine/unit/medcreate", categoryController.createUnitMed);
-router.get("/medicine/unit/med/:id", categoryController.getUnitByMedId);
-router.get("/medicine/unit/med", categoryController.getUnitMed);
+// /category/medicine/group
+router.get("/medicine/group", categoryController.getGroupMed);
+router.post("/medicine/group/add", categoryController.addGroupMed);
+router.delete(
+  "/medicine/group/harddelete/:id",
+  categoryController.hardDeleteGr
+);
+router.put("/medicine/group/update/:id", categoryController.updateGroupMed);
+
+router.put("/medicine/group/restore/:id", categoryController.resGroupMed);
+router.put(
+  "/medicine/group/softdelete/:id",
+  categoryController.softDeleteGrMed
+);
+
+// / category/medicine/unit
+// router.get("/medicine/unit/all", categoryController.getUnitAll);
+router.post("/medicine/unit/add", categoryController.addUnitMed);
+router.put("/medicine/unit/update/:id", categoryController.updateUnitMed);
+router.put("/medicine/unit/restore/:id", categoryController.resUnitMed);
+router.put(
+  "/medicine/unit/softdelete/:id",
+  categoryController.softDeleteUnitMed
+);
+router.delete(
+  "/medicine/unit/harddelete/:id",
+  categoryController.hardDelUnitMed
+);
+
+router.get("/medicine/unit", categoryController.getUnitMed);
 
 router.get("/medicine/search/*", categoryController.getMedicinesName);
 router.get("/medicine", categoryController.getAllMedicine);

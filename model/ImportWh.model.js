@@ -159,7 +159,6 @@ ImportWh.getImportDetailByIptId = function (id, callback) {
 
 ImportWh.createImportDetails = function (data, callback) {
   var sql = "";
-  console.log(data);
 
   data.forEach((detail) => {
     sql += `INSERT INTO ipt_detail (med_id, count_max, count_medium, count_min, sl_tong, gianhap_chuaqd, gianhap_daqd, giaban_daqd, thanh_tien, ck, vat, han_dung, so_lo, iptCp_id) VALUES (${detail.id}, ${detail.count_max}, ${detail.count_medium}, ${detail.count_min}, ${detail.sl_tong}, ${detail.gianhap_chuaqd}, ${detail.gianhap_daqd}, ${detail.giaban_daqd}, ${detail.thanh_tien}, ${detail.ck}, ${detail.vat}, ${detail.han_dung}, ${detail.so_lo}, 2);`;
@@ -220,7 +219,6 @@ ImportWh.softDelete = function ({ data }, callback) {
     currentDate.getDate();
 
   var sql = "";
-  console.log(datetime);
 
   data.forEach((med) => {
     sql += `UPDATE medicine SET isDeleted=1, deletedAt="${datetime}" WHERE ID=${med.id};`;

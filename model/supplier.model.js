@@ -52,7 +52,7 @@ Supplier.update = function (id, data, callback) {
     currentDate.getDate();
 
   db.query(
-    "UPDATE supplier SET Name=?, Address=?, PhoneNumber=?, Email=?, TaxCode=?, personRepresent=? WHERE ID=?",
+    "UPDATE supplier SET ten_ncc=?, Address=?, PhoneNumber=?, Email=?, TaxCode=?, personRepresent=? WHERE ID=?",
     [
       data.Name,
       data.Address,
@@ -117,21 +117,5 @@ Supplier.restore = function (id, callback) {
     }
   );
 };
-
-// Supplier.getByInfo = function (data, callback) {
-//   db.query("SELECT * FROM supplier", (err, response) => {
-//     if (err || response.length === 0) {
-//       callback(null);
-//     } else {
-//       const filltered = response.filter((sup) => {
-//         const name = medicine.ten;
-//         if (name.toLowerCase().includes(data.q.toLowerCase())) {
-//           return medicine;
-//         }
-//       });
-//       callback(filltered);
-//     }
-//   });
-// }
 
 module.exports = Supplier;

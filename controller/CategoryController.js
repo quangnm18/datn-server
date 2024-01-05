@@ -43,6 +43,8 @@ class CategoryController {
     });
   }
 
+  //unit medicine
+
   getUnitAll(req, res) {
     Medicine.getUnitAll((data) => {
       res.json(data);
@@ -55,14 +57,69 @@ class CategoryController {
     });
   }
 
-  createUnitMed(req, res) {
-    Medicine.createUnitMed(req.body, (data) => {
+  addUnitMed(req, res) {
+    Medicine.addUnitMed(req.body, (data) => {
       res.json(data);
     });
   }
 
-  getUnitByMedId(req, res) {
-    Medicine.getUnitByMedId(req.params.id, (data) => {
+  updateUnitMed(req, res) {
+    Medicine.updateUnitMed(req.params.id, req.body, (data) => {
+      res.json(data);
+    });
+  }
+
+  softDeleteUnitMed(req, res) {
+    Medicine.softDeleteUnitMed(req.params.id, (data) => {
+      res.json(data);
+    });
+  }
+
+  resUnitMed(req, res) {
+    Medicine.resUnitMed(req.params.id, (data) => {
+      res.json(data);
+    });
+  }
+
+  hardDelUnitMed(req, res) {
+    Medicine.hardDelUnit(req.params.id, (data) => {
+      res.json(data);
+    });
+  }
+
+  //group medicine
+  getGroupMed(req, res) {
+    Medicine.getGroupMed((data) => {
+      res.json(data);
+    });
+  }
+
+  hardDeleteGr(req, res) {
+    Medicine.hardDeleteGr(req.params.id, (data) => {
+      res.json(data);
+    });
+  }
+
+  addGroupMed(req, res) {
+    Medicine.addGroupMed(req.body, (data) => {
+      res.json(data);
+    });
+  }
+
+  updateGroupMed(req, res) {
+    Medicine.updateGroupMed(req.params.id, req.body, (data) => {
+      res.json(data);
+    });
+  }
+
+  softDeleteGrMed(req, res) {
+    Medicine.softDeleteGrMed(req.params.id, (data) => {
+      res.json(data);
+    });
+  }
+
+  resGroupMed(req, res) {
+    Medicine.resGroupMed(req.params.id, (data) => {
       res.json(data);
     });
   }
