@@ -35,9 +35,15 @@ router.delete(
 router.get("/medicine/unit", categoryController.getUnitMed);
 
 router.get("/medicine/search/*", categoryController.getMedicinesName);
+router.get("/medicinecurrent", categoryController.getAllMedCurrent);
 router.get("/medicine", categoryController.getAllMedicine);
 router.post("/medicine/add", categoryController.createMedicine);
 router.delete("/medicine/delete/:id", categoryController.deleteMedicine);
+
+router.get("/warehouse", categoryController.getCheckWh);
+router.get("/warehouse/sellsearch/*", categoryController.getCheckWhByName);
+
+router.get("/medicine/expand/:id", categoryController.getMedicineById);
 
 router.put(
   "/medicine/update/softdelete/",

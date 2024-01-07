@@ -17,6 +17,7 @@ const ImportIv = (item) => {
   this.so_lo = item.so_lo;
   this.iptCp_id = item.iptCp_id;
 };
+
 //import invoice details
 
 ImportIv.createInvoice = function (
@@ -49,26 +50,36 @@ ImportIv.createInvoiceDetail = function (
   { dataDetails, invoice_code },
   callback
 ) {
+  var currentDate = new Date();
+  var datetime =
+    currentDate.getFullYear() +
+    "-" +
+    (currentDate.getMonth() + 1) +
+    "-" +
+    currentDate.getDate();
+
   db.query(
-    "INSERT INTO ipt_detail (med, soluong_lon, soluong_tb, soluong_nho, sl_tong, dvt, dong_goi, gianhap_chuaqd, gianhap_daqd, giaban_daqd, thanh_tien, ck, vat, han_dung, so_lo, ma_hoa_don) VALUES ?",
+    "INSERT INTO ipt_detail (med_id, med, soluong_lon, soluong_tb, soluong_nho, sl_tong, dvt, dong_goi, gianhap_chuaqd, gianhap_daqd, giaban_daqd, thanh_tien, ck, vat, han_dung, so_lo, ma_hoa_don, createdDt_at) VALUES ?",
     [
       dataDetails.map((item) => [
+        item.med_id,
         item.ten,
         item.soluong_lon,
-        item.soluong_tb,
+        item.soluong_tb ? item.soluong_tb : 0,
         item.soluong_nho,
         item.sl_tong,
         item.dvt,
         item.dong_goi,
         item.gianhap_chuaqd,
         item.gianhap_daqd,
-        item.giaban_daqd,
+        item.giaban_daqd ? item.giaban_daqd : 0,
         item.thanh_tien,
-        item.ck,
-        item.vat,
+        item.ck ? item.ck : 0,
+        item.vat ? item.vat : 0,
         item.han_dung,
         item.so_lo,
         "IV" + invoice_code,
+        datetime,
       ]),
     ],
     (err, response) => {
@@ -127,6 +138,17 @@ ImportIv.getDetailsByCode = function (data, callback) {
   );
 };
 
+ImportIv.getAllDetailsImported = function (callback) {
+  db.query(
+    "SELECT * FROM ipt_detail WHERE isImported = 1 AND isDeletedDt = 0 ",
+    (err, response) => {
+      if (err) {
+        callback(err);
+      } else callback(response);
+    }
+  );
+};
+
 ImportIv.softDeleteInvoice = function (id, callback) {
   var currentDate = new Date();
   var datetime =
@@ -149,7 +171,28 @@ ImportIv.softDeleteInvoice = function (id, callback) {
   );
 };
 
-//
+ImportIv.softDeleteIvDetail = function (id, callback) {
+  var currentDate = new Date();
+  var datetime =
+    currentDate.getFullYear() +
+    "-" +
+    (currentDate.getMonth() + 1) +
+    "-" +
+    currentDate.getDate();
+  db.query(
+    "UPDATE ipt_detail SET isDeletedDt=1, deletedAt=? WHERE ID=?",
+    [datetime, id],
+    (err, response) => {
+      if (err) {
+        callback(err);
+      } else {
+        callback(response);
+      }
+    }
+  );
+};
+
+////////////
 
 ImportIv.restoreImportCp = function (id, callback) {
   db.query("UPDATE ipt_cp SET isDeleted=0 WHERE ID=?", id, (err, response) => {

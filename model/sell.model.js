@@ -1,16 +1,20 @@
 const db = require("../common/connect");
 
-const SaleInvoice = (invoice) => {
-  this.ID = invoice.ID;
-  this.StaffID = invoice.StaffID;
-  this.CreateDate = invoice.CreateDate;
-  this.TotalPrice = invoice.TotalPrice;
+const Sell = (sell) => {
+  this.id = sell.ID;
+  this.staffId = sell.StaffID;
+  this.CreateDate = sell.CreateDate;
+  this.TotalPrice = sell.TotalPrice;
 };
 
 // List Invoice
-SaleInvoice.get_all = function (result) {
+
+Sell.createInvoice = function (data, callback) {};
+
+///////////
+Sell.get_all = function (result) {
   db.query(
-    "SELECT saleinvoice.ID, saleinvoice.CreateDate, saleinvoice.TotalPrice, users.Name FROM saleinvoice INNER JOIN users ON saleinvoice.StaffID=users.ID",
+    "SELECT Sell.ID, Sell.CreateDate, Sell.TotalPrice, users.Name FROM Sell INNER JOIN users ON Sell.StaffID=users.ID",
     (err, data) => {
       if (err) {
         result("ERROR");
@@ -19,8 +23,8 @@ SaleInvoice.get_all = function (result) {
   );
 };
 
-SaleInvoice.getByDate = function (id, callback) {
-  db.query("SELECT * FROM SaleInvoice WHERE ID = ?", id, (err, response) => {
+Sell.getByDate = function (id, callback) {
+  db.query("SELECT * FROM Sell WHERE ID = ?", id, (err, response) => {
     if (err || response.length === 0) {
       callback(null);
     } else {
@@ -29,8 +33,8 @@ SaleInvoice.getByDate = function (id, callback) {
   });
 };
 
-SaleInvoice.delete = function (id, callback) {
-  db.query("DELETE FROM SaleInvoice WHERE ID = ?", id, (err, response) => {
+Sell.delete = function (id, callback) {
+  db.query("DELETE FROM Sell WHERE ID = ?", id, (err, response) => {
     if (err) {
       callback("ERROR");
     } else {
@@ -39,15 +43,15 @@ SaleInvoice.delete = function (id, callback) {
   });
 };
 
-SaleInvoice.getByName = function (data, callback) {
-  db.query("SELECT * FROM SaleInvoice", (err, response) => {
+Sell.getByName = function (data, callback) {
+  db.query("SELECT * FROM Sell", (err, response) => {
     if (err || response.length === 0) {
       callback(null);
     } else {
-      const filltered = response.filter((SaleInvoice) => {
-        const name = SaleInvoice.Name;
+      const filltered = response.filter((Sell) => {
+        const name = Sell.Name;
         if (name.toLowerCase().includes(data.name)) {
-          return SaleInvoice;
+          return Sell;
         }
       });
       callback(filltered);
@@ -55,15 +59,15 @@ SaleInvoice.getByName = function (data, callback) {
   });
 };
 
-SaleInvoice.create = function (data, callback) {
-  db.query("INSERT INTO SaleInvoice SET ?", data, (err, response) => {
+Sell.create = function (data, callback) {
+  db.query("INSERT INTO Sell SET ?", data, (err, response) => {
     if (err) {
       callback("ERROR");
     } else callback({ ID: response.insertId, ...data });
   });
 };
 
-SaleInvoice.update = function (id, data, callback) {
+Sell.update = function (id, data, callback) {
   var currentDate = new Date();
   var datetime =
     currentDate.getFullYear() +
@@ -73,7 +77,7 @@ SaleInvoice.update = function (id, data, callback) {
     currentDate.getDate();
 
   db.query(
-    "UPDATE SaleInvoice SET Name=?, SupplierID=?, Ingredients=?, DueDate=?, Origin=?, ResNumber=?, Contraindicate=?, Price=? WHERE ID=?",
+    "UPDATE Sell SET Name=?, SupplierID=?, Ingredients=?, DueDate=?, Origin=?, ResNumber=?, Contraindicate=?, Price=? WHERE ID=?",
     [
       data.Name,
       data.SupplierID,
@@ -95,4 +99,4 @@ SaleInvoice.update = function (id, data, callback) {
   );
 };
 
-module.exports = SaleInvoice;
+module.exports = Sell;

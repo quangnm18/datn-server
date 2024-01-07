@@ -38,10 +38,24 @@ class ImportIvController {
     });
   }
 
+  getAllDetailsImported(req, res) {
+    ImportIv.getAllDetailsImported((data) => {
+      res.json(data);
+    });
+  }
+
   softDeleteInvoice(req, res) {
     ImportIv.softDeleteInvoice(req.params.id, (data) => {
       res.json(data);
     });
+  }
+
+  softDeleteIvDetail(req, res) {
+    try {
+      ImportIv.softDeleteIvDetail(req.params.id, (data) => {
+        res.json(data);
+      });
+    } catch (error) {}
   }
 }
 

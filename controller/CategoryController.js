@@ -9,6 +9,24 @@ class CategoryController {
     });
   }
 
+  getAllMedCurrent(req, res) {
+    Medicine.get_allCurrent((data) => {
+      res.json(data);
+    });
+  }
+
+  getCheckWh(req, res) {
+    Medicine.getCheckWh((data) => {
+      res.json(data);
+    });
+  }
+
+  getCheckWhByName(req, res) {
+    Medicine.getCheckWhByName(req.query, (data) => {
+      res.json(data);
+    });
+  }
+
   createMedicine(req, res) {
     Medicine.create(req.body, (data) => res.send(data));
   }
@@ -40,6 +58,12 @@ class CategoryController {
   getMedicinesName(req, res) {
     Medicine.getByName(req.query, (data) => {
       res.send(data);
+    });
+  }
+
+  getMedicineById(req, res) {
+    Medicine.getById(req.params.id, (data) => {
+      res.json(data);
     });
   }
 

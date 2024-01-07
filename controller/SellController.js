@@ -1,5 +1,4 @@
 var Sell = require("../model/sell.model");
-var CreateInvoice = require("../model/createInvoice.model");
 
 class SellController {
   // /sell/list
@@ -23,7 +22,7 @@ class SellController {
 
   // /sell/create
   getListUnitByID(req, res) {
-    CreateInvoice.getListUnitByID(req.params.id, (data) => {
+    Sell.getListUnitByID(req.params.id, (data) => {
       res.json(data);
     });
   }
