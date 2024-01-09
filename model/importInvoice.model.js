@@ -192,73 +192,8 @@ ImportIv.softDeleteIvDetail = function (id, callback) {
   );
 };
 
-////////////
-
-ImportIv.restoreImportCp = function (id, callback) {
-  db.query("UPDATE ipt_cp SET isDeleted=0 WHERE ID=?", id, (err, response) => {
-    if (err) {
-      callback(err);
-    } else callback("Success");
-  });
-};
-
-//import-details
-
-ImportIv.getAllImportDetail = function (callback) {
-  db.query("SELECT * FROM ipt_detail", (err, response) => {
-    if (err) {
-      callback(err);
-    } else {
-      callback(response);
-    }
-  });
-};
-
-ImportIv.getImportDetailByIptId = function (id, callback) {
-  db.query("SELECT * FROM ipt_detail WHERE id=?", id, (err, response) => {
-    if (err) {
-      callback(err);
-    } else callback(response);
-  });
-};
-
-ImportIv.update = function (id, data, callback) {
-  // var currentDate = new Date();
-  // var datetime =
-  //   currentDate.getFullYear() +
-  //   "/" +
-  //   (currentDate.getMonth() + 1) +
-  //   "/" +
-  //   currentDate.getDate();
-
-  db.query(
-    "UPDATE ipt_detail SET count_max=?, count_medium=?, count_min=?, gianhap_chuaqd=?, gianhap_daqd=?, giaban_daqd=?, thanh_tien=?, ck=?, vat=?, han_dung=?, so_lo=?, iptCp_id=? WHERE ID=?",
-    [
-      data.count_max,
-      data.count_medium,
-      data.count_min,
-      data.gianhap_chuaqd,
-      data.gianhap_daqd,
-      data.giaban_daqd,
-      data.thanh_tien,
-      data.ck,
-      data.vat,
-      data.han_dung,
-      data.so_lo,
-      data.iptCp_id,
-      id,
-    ],
-    (err, response) => {
-      if (err) {
-        callback(err);
-      } else {
-        callback(data);
-      }
-    }
-  );
-};
-
-ImportIv.softDelete = function ({ data }, callback) {
+//chap thuan phieu nhap hang
+ImportIv.acceptInvoice = function (data, callback) {
   var currentDate = new Date();
   var datetime =
     currentDate.getFullYear() +
@@ -266,19 +201,38 @@ ImportIv.softDelete = function ({ data }, callback) {
     (currentDate.getMonth() + 1) +
     "-" +
     currentDate.getDate();
+  db.query(
+    "UPDATE ipt_cp SET status=1, updatedStatusDate=? WHERE invoice_code=?",
+    [datetime, data.ma_hoa_don],
+    (err, res) => {
+      if (err) {
+        callback(err);
+      } else callback(res);
+    }
+  );
+};
 
-  var sql = "";
+ImportIv.importedIvDetail = function (data, callback) {
+  db.query(
+    "UPDATE ipt_detail SET isImported=1 WHERE ma_hoa_don=?",
+    data.ma_hoa_don,
+    (err, res) => {
+      if (err) {
+        callback(err);
+      } else {
+        callback(res);
+      }
+    }
+  );
+};
 
-  data.forEach((med) => {
-    sql += `UPDATE medicine SET isDeleted=1, deletedAt="${datetime}" WHERE ID=${med.id};`;
-  });
+////////////
 
-  db.query(sql, (err, response) => {
+ImportIv.restoreImportCp = function (id, callback) {
+  db.query("UPDATE ipt_cp SET isDeleted=0 WHERE ID=?", id, (err, response) => {
     if (err) {
       callback(err);
-    } else {
-      callback("OK");
-    }
+    } else callback("Success");
   });
 };
 

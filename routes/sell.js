@@ -3,9 +3,16 @@ const router = express.Router();
 
 const sellController = require("../controller/SellController");
 
-// /sell/list
-router.get("/sell", sellController.getAllInvoiceSale);
-router.delete("/sell/delete/:id", sellController.deleteInvoice);
+// /sell/
+router.post("/ivdetail/create", sellController.createSaleDetail);
+router.post("/ivcreate", sellController.createInvoice);
+router.get("/ivlist", sellController.getListIv);
+router.get("/ivdetailcurr/*", sellController.getSaleDetailByIvCode);
+router.get("/ivdetailcurr", sellController.getAllSaleDetailCurr);
+
+router.get("/ivdetail/synthetic", sellController.getSyntheticSaleDetail);
+
+router.put("/ivlist/softdelete/:id", sellController.softDelSaleIv);
 
 // /sell/createinvoice
 

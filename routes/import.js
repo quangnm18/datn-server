@@ -21,4 +21,7 @@ router.put(
   ImportIvController.softDeleteIvDetail
 );
 
+router.put("/acceptiv", ImportIvController.acceptInvoice);
+router.put("/importdetail", ImportIvController.importedIvDetail); // chap thuan nhap chi tiet don nhap vao kho
+
 module.exports = router;

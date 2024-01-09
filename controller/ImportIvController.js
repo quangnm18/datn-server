@@ -57,6 +57,22 @@ class ImportIvController {
       });
     } catch (error) {}
   }
+
+  acceptInvoice(req, res) {
+    try {
+      ImportIv.acceptInvoice(req.body, (data) => {
+        res.json(data);
+      });
+    } catch (error) {}
+  }
+
+  importedIvDetail(req, res) {
+    try {
+      ImportIv.importedIvDetail(req.body, (data) => {
+        res.json(data);
+      });
+    } catch (error) {}
+  }
 }
 
 module.exports = new ImportIvController();
