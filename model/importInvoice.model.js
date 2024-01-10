@@ -20,6 +20,14 @@ const ImportIv = (item) => {
 
 //import invoice details
 
+ImportIv.getMaxIdIv = function (callback) {
+  db.query("SELECT MAX(id) as max_id FROM ipt_cp", (err, res) => {
+    if (err) {
+      callback(err);
+    } else callback(res);
+  });
+};
+
 ImportIv.createInvoice = function (
   { dataDetails, total, tong_ck, newId },
   callback
@@ -103,15 +111,13 @@ ImportIv.getListInvoice = function (callback) {
   );
 };
 
-ImportIv.getListInvoiceCurrent = function (callback) {
+ImportIv.getPaginateListIv = function (data, callback) {
   db.query(
-    "SELECT ipt_cp.id, ipt_cp.createdDate, ipt_cp.giatri_nhap, ipt_cp.tong_ck, ipt_cp.thanh_tien, ipt_cp.status, ipt_cp.updatedStatusDate, ipt_cp.isDeleted, ipt_cp.deletedAt, ipt_cp.invoice_code, users.Name, supplier.ten_ncc FROM ipt_cp LEFT JOIN users ON ipt_cp.user_id = users.ID LEFT JOIN supplier ON ipt_cp.supplier = supplier.ID WHERE ipt_cp.isDeleted=0 ORDER BY id DESC",
-    (err, response) => {
+    `CALL pagination_iptcp(${data.isDeleted}, ${data.numRecord}, ${data.startRecord}, @${data.totalRecord})`,
+    (err, res) => {
       if (err) {
         callback(err);
-      } else {
-        callback(response);
-      }
+      } else callback(res);
     }
   );
 };
@@ -124,6 +130,17 @@ ImportIv.getAllDetail = function (callback) {
       callback(response);
     }
   });
+};
+
+ImportIv.getPaginateDetail = function (data, callback) {
+  db.query(
+    `CALL pagination_iptdetail(${data.isImported}, ${data.isDeleted}, ${data.numRecord}, ${data.startRecord}, @${data.totalRecord})`,
+    (err, res) => {
+      if (err) {
+        callback(err);
+      } else callback(res);
+    }
+  );
 };
 
 ImportIv.getDetailsByCode = function (data, callback) {
@@ -192,6 +209,30 @@ ImportIv.softDeleteIvDetail = function (id, callback) {
   );
 };
 
+ImportIv.restoreIvDetail = function (id, callback) {
+  db.query(
+    "UPDATE ipt_detail SET isDeletedDt=0 WHERE ID=?",
+    id,
+    (err, response) => {
+      if (err) {
+        callback(err);
+      } else {
+        callback(response);
+      }
+    }
+  );
+};
+
+ImportIv.hardDelIvDetail = function (id, callback) {
+  db.query("DELETE FROM ipt_detail WHERE ID=?", id, (err, response) => {
+    if (err) {
+      callback(err);
+    } else {
+      callback(response);
+    }
+  });
+};
+
 //chap thuan phieu nhap hang
 ImportIv.acceptInvoice = function (data, callback) {
   var currentDate = new Date();
@@ -232,7 +273,15 @@ ImportIv.restoreImportCp = function (id, callback) {
   db.query("UPDATE ipt_cp SET isDeleted=0 WHERE ID=?", id, (err, response) => {
     if (err) {
       callback(err);
-    } else callback("Success");
+    } else callback(response);
+  });
+};
+
+ImportIv.hardDeleteImportCp = function (id, callback) {
+  db.query("DELETE FROM ipt_cp WHERE id=?", id, (err, res) => {
+    if (err) {
+      callback(err);
+    } else callback(res);
   });
 };
 

@@ -2,7 +2,39 @@ var Medicine = require("../model/medicine.model");
 var Supplier = require("../model/supplier.model");
 
 class CategoryController {
+  getMaxIdMed(req, res) {
+    try {
+      Medicine.getMaxIdMed((data) => {
+        res.json(data);
+      });
+    } catch (error) {}
+  }
+
+  getMaxIdGr(req, res) {
+    try {
+      Medicine.getMaxIdGr((data) => {
+        res.json(data);
+      });
+    } catch (error) {}
+  }
+
+  getMaxIdUnit(req, res) {
+    try {
+      Medicine.getMaxIdUnit((data) => {
+        res.json(data);
+      });
+    } catch (error) {}
+  }
+
   //[GET] /category/medicine
+  getAllMedCurr(req, res) {
+    try {
+      Medicine.getAllMedCurr(req.query, (data) => {
+        res.json(data);
+      });
+    } catch (error) {}
+  }
+
   getAllMedicine(req, res) {
     Medicine.get_all(function (data) {
       res.json(data);
@@ -69,16 +101,12 @@ class CategoryController {
 
   //unit medicine
 
-  getUnitAll(req, res) {
-    Medicine.getUnitAll((data) => {
-      res.json(data);
-    });
-  }
-
   getUnitMed(req, res) {
-    Medicine.getUnitMed((data) => {
-      res.json(data);
-    });
+    try {
+      Medicine.getUnitMed(req.query, (data) => {
+        res.json(data);
+      });
+    } catch (error) {}
   }
 
   addUnitMed(req, res) {
@@ -148,23 +176,29 @@ class CategoryController {
     });
   }
 
+  getGrMedCurr(req, res) {
+    try {
+      Medicine.getGrMedCurr(req.query, (data) => {
+        res.json(data);
+      });
+    } catch (error) {}
+  }
+
   //[GET] /category/supplier
-  getAllSupplier(req, res) {
-    Supplier.get_all(function (data) {
-      res.send(data);
-    });
+  getAllSup(req, res) {
+    try {
+      Supplier.getAllSup(req.query, (data) => {
+        res.json(data);
+      });
+    } catch (error) {}
   }
 
-  getCurrSup(req, res) {
-    Supplier.getCurrent((data) => {
-      res.json(data);
-    });
-  }
-
-  getDeletedSup(req, res) {
-    Supplier.getDeleted((data) => {
-      res.json(data);
-    });
+  getAllNameSup(req, res) {
+    try {
+      Supplier.getAllNameSup((data) => {
+        res.json(data);
+      });
+    } catch (error) {}
   }
 
   createSupplier(req, res) {

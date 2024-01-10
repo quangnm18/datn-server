@@ -21,6 +21,43 @@ const Medicine = (medicine) => {
   this.don_vi_duoc = medicine.don_vi_duoc;
 };
 
+Medicine.getMaxIdMed = function (callback) {
+  db.query("SELECT MAX(id) as max_id FROM medicine", (err, res) => {
+    if (err) {
+      callback(err);
+    } else callback(res);
+  });
+};
+
+Medicine.getMaxIdGr = function (callback) {
+  db.query("SELECT MAX(id) as max_id FROM group_medicine", (err, res) => {
+    if (err) {
+      callback(err);
+    } else callback(res);
+  });
+};
+
+Medicine.getMaxIdUnit = function (callback) {
+  db.query("SELECT MAX(id) as max_id FROM unit_med", (err, res) => {
+    if (err) {
+      callback(err);
+    } else callback(res);
+  });
+};
+
+//Medicine
+
+Medicine.getAllMedCurr = function (data, callback) {
+  db.query(
+    `CALL pagination_medicine(${data.isDeleted}, ${data.numRecord}, ${data.startRecord}, @${data.totalRecord})`,
+    (err, res) => {
+      if (err) {
+        callback(err);
+      } else callback(res);
+    }
+  );
+};
+
 Medicine.get_all = function (result) {
   db.query(
     "SELECT medicine.id, medicine.sdk, medicine.han_sdk, medicine.ten, medicine.hoat_chat, medicine.ham_luong, medicine.sqd, medicine.nam_cap, medicine.dot_cap, medicine.dang_bao_che, medicine.dong_goi, medicine.tieu_chuan, medicine.han_dung, medicine.cty_dk, medicine.dchi_ctydk, medicine.cty_sx, medicine.dchi_ctysx, medicine.nhom_thuoc, medicine.don_vi_duoc, medicine.don_gia, medicine.isDeleted, medicine.deletedAt, group_medicine.group_code, group_medicine.ten_nhom_thuoc, unit_med.description_unit, unit_med.unit_code FROM medicine LEFT JOIN group_medicine ON medicine.nhom_thuoc = group_medicine.id LEFT JOIN unit_med ON medicine.don_vi_duoc = unit_med.id ORDER BY id DESC",
@@ -230,20 +267,15 @@ Medicine.restoreMed = function (id, callback) {
 
 //unit
 
-Medicine.getUnitAll = function (callback) {
-  db.query("SELECT * FROM unit_all", (err, response) => {
-    if (err) {
-      callback(err);
-    } else callback(response);
-  });
-};
-
-Medicine.getUnitMed = function (callback) {
-  db.query("SELECT * FROM unit_med ORDER BY id DESC", (err, response) => {
-    if (err) {
-      callback(err);
-    } else callback(response);
-  });
+Medicine.getUnitMed = function (data, callback) {
+  db.query(
+    `CALL pagination_unitmed(${data.isDeleted}, ${data.numRecord}, ${data.startRecord}, @${data.totalRecord})`,
+    (err, res) => {
+      if (err) {
+        callback(err);
+      } else callback(res);
+    }
+  );
 };
 
 Medicine.addUnitMed = function (data, callback) {
@@ -362,6 +394,17 @@ Medicine.resGroupMed = function (id, callback) {
       if (err) {
         callback(err);
       } else callback(response);
+    }
+  );
+};
+
+Medicine.getGrMedCurr = function (data, callback) {
+  db.query(
+    `CALL pagination_groupmed(${data.isDeleted}, ${data.numRecord}, ${data.startRecord}, @${data.totalRecord})`,
+    (err, res) => {
+      if (err) {
+        callback(err);
+      } else callback(res);
     }
   );
 };

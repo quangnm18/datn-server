@@ -10,27 +10,22 @@ const Supplier = (supplier) => {
   this.personRepresent = supplier.personRepresent;
 };
 
-Supplier.get_all = function (result) {
-  db.query("SELECT * FROM supplier ORDER BY ID DESC", (err, data) => {
-    if (err) {
-      result("ERROR");
-    } else result(data);
-  });
+Supplier.getAllSup = function (data, callback) {
+  db.query(
+    `CALL pagination_supplier(${data.isDeleted}, ${data.numRecord}, ${data.startRecord}, @${data.totalRecord})`,
+    (err, res) => {
+      if (err) {
+        callback(err);
+      } else callback(res);
+    }
+  );
 };
 
-Supplier.getCurrent = function (result) {
-  db.query("SELECT * FROM supplier WHERE isDeleted=?", 0, (err, data) => {
+Supplier.getAllNameSup = function (callback) {
+  db.query("SELECT * FROM supplier", (err, res) => {
     if (err) {
-      result("ERROR");
-    } else result(data);
-  });
-};
-
-Supplier.getDeleted = function (result) {
-  db.query("SELECT * FROM supplier WHERE isDeleted=?", 1, (err, data) => {
-    if (err) {
-      result("ERROR");
-    } else result(data);
+      callback(err);
+    } else callback(res);
   });
 };
 
@@ -54,7 +49,7 @@ Supplier.update = function (id, data, callback) {
   db.query(
     "UPDATE supplier SET ten_ncc=?, Address=?, PhoneNumber=?, Email=?, TaxCode=?, personRepresent=? WHERE ID=?",
     [
-      data.Name,
+      data.ten_ncc,
       data.Address,
       data.PhoneNumber,
       data.Email,

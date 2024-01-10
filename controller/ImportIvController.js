@@ -2,6 +2,14 @@ var ImportIv = require("../model/importInvoice.model");
 
 class ImportIvController {
   // /importlist/create
+  getMaxIdIv(req, res) {
+    try {
+      ImportIv.getMaxIdIv((data) => {
+        res.json(data);
+      });
+    } catch (error) {}
+  }
+
   createInvoice(req, res) {
     ImportIv.createInvoice(req.body, (data) => {
       res.json(data);
@@ -20,16 +28,28 @@ class ImportIvController {
     });
   }
 
-  getListInvoiceCurrent(req, res) {
-    ImportIv.getListInvoiceCurrent((data) => {
-      res.json(data);
-    });
+  getPaginateListIv(req, res) {
+    try {
+      ImportIv.getPaginateListIv(req.query, (data) => {
+        res.json(data);
+      });
+    } catch (error) {}
   }
+
+  //get detail
 
   getAllDetail(req, res) {
     ImportIv.getAllDetail((data) => {
       res.json(data);
     });
+  }
+
+  getPaginateDetail(req, res) {
+    try {
+      ImportIv.getPaginateDetail(req.query, (data) => {
+        res.json(data);
+      });
+    } catch (error) {}
   }
 
   getDetailsByCode(req, res) {
@@ -69,6 +89,38 @@ class ImportIvController {
   importedIvDetail(req, res) {
     try {
       ImportIv.importedIvDetail(req.body, (data) => {
+        res.json(data);
+      });
+    } catch (error) {}
+  }
+
+  restoreImportCp(req, res) {
+    try {
+      ImportIv.restoreImportCp(req.params.id, (data) => {
+        res.json(data);
+      });
+    } catch (error) {}
+  }
+
+  hardDeleteImportCp(req, res) {
+    try {
+      ImportIv.hardDeleteImportCp(req.params.id, (data) => {
+        res.json(data);
+      });
+    } catch (error) {}
+  }
+
+  restoreIvDetail(req, res) {
+    try {
+      ImportIv.restoreIvDetail(req.params.id, (data) => {
+        res.json(data);
+      });
+    } catch (error) {}
+  }
+
+  hardDelIvDetail(req, res) {
+    try {
+      ImportIv.hardDelIvDetail(req.params.id, (data) => {
         res.json(data);
       });
     } catch (error) {}

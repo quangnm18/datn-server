@@ -1,6 +1,14 @@
 var Sell = require("../model/sell.model");
 
 class SellController {
+  getMaxIdIv(req, res) {
+    try {
+      Sell.getMaxIdIv((data) => {
+        res.json(data);
+      });
+    } catch (error) {}
+  }
+
   // /sell/ivcreate
   createInvoice(req, res) {
     try {
@@ -18,9 +26,17 @@ class SellController {
     } catch (error) {}
   }
 
+  getAllListIv(req, res) {
+    try {
+      Sell.getAllListIv((data) => {
+        res.json(data);
+      });
+    } catch (error) {}
+  }
+
   getListIv(req, res) {
     try {
-      Sell.getListIv((data) => {
+      Sell.getListIv(req.query, (data) => {
         res.json(data);
       });
     } catch (error) {}
@@ -45,6 +61,22 @@ class SellController {
   softDelSaleIv(req, res) {
     try {
       Sell.softDelSaleIv(req.params.id, (data) => {
+        res.json(data);
+      });
+    } catch (error) {}
+  }
+
+  restoreSaleIv(req, res) {
+    try {
+      Sell.restoreSaleIv(req.params.id, (data) => {
+        res.json(data);
+      });
+    } catch (error) {}
+  }
+
+  hardDelSaleIv(req, res) {
+    try {
+      Sell.hardDelSaleIv(req.params.id, (data) => {
         res.json(data);
       });
     } catch (error) {}
