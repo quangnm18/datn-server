@@ -30,6 +30,8 @@ router.get("/medicine/search/*", categoryController.getMedicinesName);
 router.get("/medicinecurrent", categoryController.getAllMedCurrent);
 router.get("/medicine", categoryController.getAllMedicine);
 router.post("/medicine/add", categoryController.createMedicine);
+router.put("/medicine/updatecount", categoryController.updateCount);
+
 router.delete("/medicine/delete/:id", categoryController.deleteMedicine);
 
 router.get("/warehouse", categoryController.getCheckWh);
@@ -72,5 +74,6 @@ router.delete(
 );
 
 router.get("/medicineunit/*", categoryController.getUnitMed);
+router.get("/medicineunitall", categoryController.getUnitAll);
 
 module.exports = router;

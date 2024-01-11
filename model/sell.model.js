@@ -26,9 +26,9 @@ Sell.createInvoice = function (data, callback) {
     currentDate.getDate();
 
   db.query(
-    `INSERT INTO sale_cp (ma_nhan_vien, createdDate, tong_tien_hang, tong_ck, tong_phai_tra, khach_tra, tien_du, ma_hoa_don) VALUES (${
+    `INSERT INTO sale_cp (ma_nhan_vien, createdDate, tong_tien_hang, ck, tong_ck, tong_phai_tra, khach_tra, tien_du, ma_hoa_don) VALUES (${
       data.user_id
-    }, "${datetime}", ${data.tong_tien_hang}, ${data.ck}, ${
+    }, "${datetime}", ${data.tong_tien_hang}, ${data.ck}, ${data.tong_ck}, ${
       data.tong_phai_tra ? data.tong_phai_tra : data.tong_tien_hang
     }, ${data.khach_tra}, ${data.tien_du}, 'IB${data.newId}')`,
     (err, response) => {
@@ -49,11 +49,12 @@ Sell.createSaleDetail = function ({ dataInvoice, ma_hoa_don }, callback) {
     currentDate.getDate();
 
   db.query(
-    "INSERT INTO sale_detail (med_id, ten_duoc, so_luong_ban, don_vi_ban, don_gia_ban, thanh_tien, ma_hoa_don, createdAt, isDeleted) VALUES ?",
+    "INSERT INTO sale_detail (med_id, ten_duoc, loai_dong_goi, so_luong_ban, don_vi_ban, don_gia_ban, thanh_tien, ma_hoa_don, createdAt, isDeleted) VALUES ?",
     [
       dataInvoice.map((item) => [
         item.med_id,
         item.ten_duoc,
+        item.dvl,
         item.sl_tong,
         item.donvinho,
         item.gia_ban,
@@ -120,6 +121,17 @@ Sell.getAllSaleDetailCurr = function (callback) {
   );
 };
 
+Sell.getSaleDetail = function (data, callback) {
+  db.query(
+    `CALL pagination_saledetail(${data.isDeleted}, ${data.numRecord}, ${data.startRecord}, @${data.totalRecord})`,
+    (err, res) => {
+      if (err) {
+        callback(err);
+      } else callback(res);
+    }
+  );
+};
+
 Sell.softDelSaleIv = function (id, callback) {
   var currentDate = new Date();
   var datetime =
@@ -162,7 +174,12 @@ Sell.getSyntheticSaleDetail = function (callback) {
   db.query("CALL get_synthetic_saledetail()", (err, res) => {
     if (err) {
       callback(err);
-    } else callback(res);
+    } else {
+      res[0].forEach((element) => {
+        element["so_luong_ban"] = Number.parseInt(element["so_luong_ban"]);
+      });
+      callback(res);
+    }
   });
 };
 

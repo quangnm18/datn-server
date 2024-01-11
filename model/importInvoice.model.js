@@ -66,36 +66,60 @@ ImportIv.createInvoiceDetail = function (
     "-" +
     currentDate.getDate();
 
-  db.query(
-    "INSERT INTO ipt_detail (med_id, med, soluong_lon, soluong_tb, soluong_nho, sl_tong, dvt, dong_goi, gianhap_chuaqd, gianhap_daqd, giaban_daqd, thanh_tien, ck, vat, han_dung, so_lo, ma_hoa_don, createdDt_at) VALUES ?",
-    [
-      dataDetails.map((item) => [
-        item.med_id,
-        item.ten,
-        item.soluong_lon,
-        item.soluong_tb ? item.soluong_tb : 0,
-        item.soluong_nho,
-        item.sl_tong,
-        item.dvt,
-        item.dong_goi,
-        item.gianhap_chuaqd,
-        item.gianhap_daqd,
-        item.giaban_daqd ? item.giaban_daqd : 0,
-        item.thanh_tien,
-        item.ck ? item.ck : 0,
-        item.vat ? item.vat : 0,
-        item.han_dung,
-        item.so_lo,
-        "IV" + invoice_code,
-        datetime,
-      ]),
-    ],
-    (err, response) => {
-      if (err) {
-        callback(err);
-      } else callback(response);
-    }
-  );
+  let dbq = "";
+
+  dataDetails.forEach((element) => {
+    dbq += `INSERT INTO ipt_detail (med_id, med, soluong_lon, soluong_tb, soluong_nho, sl_tong, dvt, dong_goi, gianhap_chuaqd, gianhap_daqd, giaban_daqd, thanh_tien, ck, vat, han_dung, so_lo, ma_hoa_don, createdDt_at) VALUES (${
+      element.med_id
+    }, '${element.ten}', ${element.soluong_lon}, ${
+      element.soluong_tb ? element.soluong_tb : 0
+    }, ${element.soluong_nho}, ${element.sl_tong}, '${element.dvt}', '${
+      element.dong_goi
+    }', ${element.gianhap_chuaqd},${element.gianhap_daqd},${
+      element.giaban_daqd ? element.giaban_daqd : 0
+    }, ${element.thanh_tien}, ${element.ck ? element.ck : 0}, ${
+      element.vat ? element.vat : 0
+    }, '${element.han_dung}', '${
+      element.so_lo
+    }', 'IV${invoice_code}', '${datetime}');`;
+  });
+
+  db.query(dbq, (err, res) => {
+    if (err) {
+      callback(err);
+    } else callback(res);
+  });
+
+  // db.query(
+  //   "INSERT INTO ipt_detail (med_id, med, soluong_lon, soluong_tb, soluong_nho, sl_tong, dvt, dong_goi, gianhap_chuaqd, gianhap_daqd, giaban_daqd, thanh_tien, ck, vat, han_dung, so_lo, ma_hoa_don, createdDt_at) VALUES ?",
+  //   [
+  //     dataDetails.map((item) => [
+  //       item.med_id,
+  //       item.ten,
+  //       item.soluong_lon,
+  //       item.soluong_tb ? item.soluong_tb : 0,
+  //       item.soluong_nho,
+  //       item.sl_tong,
+  //       item.dvt,
+  //       item.dong_goi,
+  //       item.gianhap_chuaqd,
+  //       item.gianhap_daqd,
+  //       item.giaban_daqd ? item.giaban_daqd : 0,
+  //       item.thanh_tien,
+  //       item.ck ? item.ck : 0,
+  //       item.vat ? item.vat : 0,
+  //       item.han_dung,
+  //       item.so_lo,
+  //       "IV" + invoice_code,
+  //       datetime,
+  //     ]),
+  //   ],
+  //   (err, response) => {
+  //     if (err) {
+  //       callback(err);
+  //     } else callback(response);
+  //   }
+  // );
 };
 
 ImportIv.getListInvoice = function (callback) {
@@ -134,7 +158,11 @@ ImportIv.getAllDetail = function (callback) {
 
 ImportIv.getPaginateDetail = function (data, callback) {
   db.query(
-    `CALL pagination_iptdetail(${data.isImported}, ${data.isDeleted}, ${data.numRecord}, ${data.startRecord}, @${data.totalRecord})`,
+    `CALL pagination_iptdetail(${
+      data.search_value ? "'" + data.search_value + "'" : null
+    }, ${data.isImported}, ${data.isDeleted}, ${data.numRecord}, ${
+      data.startRecord
+    }, @${data.totalRecord})`,
     (err, res) => {
       if (err) {
         callback(err);
@@ -243,8 +271,8 @@ ImportIv.acceptInvoice = function (data, callback) {
     "-" +
     currentDate.getDate();
   db.query(
-    "UPDATE ipt_cp SET status=1, updatedStatusDate=? WHERE invoice_code=?",
-    [datetime, data.ma_hoa_don],
+    `UPDATE ipt_cp SET status=1, updatedStatusDate='${datetime}' WHERE invoice_code='${data.ma_hoa_don}'; UPDATE ipt_detail SET isImported=1 WHERE ma_hoa_don='${data.ma_hoa_don}'; UPDATE`,
+
     (err, res) => {
       if (err) {
         callback(err);

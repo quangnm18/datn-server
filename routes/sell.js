@@ -13,8 +13,9 @@ router.get("/ivlist/*", sellController.getListIv); //co phan trang (ca deleted v
 router.get("/allivlist", sellController.getAllListIv); //get tat ca
 router.get("/ivdetailcurr/*", sellController.getSaleDetailByIvCode);
 router.get("/ivdetailcurr", sellController.getAllSaleDetailCurr);
+router.get("/ivdetail*", sellController.getSaleDetail); //co pagination
 
-router.get("/ivdetail/synthetic", sellController.getSyntheticSaleDetail);
+router.get("/allivdetail/synthetic", sellController.getSyntheticSaleDetail);
 
 router.put("/ivlist/softdelete/:id", sellController.softDelSaleIv);
 router.put("/ivlist/restore/:id", sellController.restoreSaleIv);

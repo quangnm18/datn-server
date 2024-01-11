@@ -63,6 +63,14 @@ class CategoryController {
     Medicine.create(req.body, (data) => res.send(data));
   }
 
+  updateCount(req, res) {
+    try {
+      Medicine.updateCount(req.body, (data) => {
+        res.json(data);
+      });
+    } catch (error) {}
+  }
+
   deleteMedicine(req, res) {
     Medicine.delete(req.params.id, (response) => {
       res.send(response);
@@ -104,6 +112,14 @@ class CategoryController {
   getUnitMed(req, res) {
     try {
       Medicine.getUnitMed(req.query, (data) => {
+        res.json(data);
+      });
+    } catch (error) {}
+  }
+
+  getUnitAll(req, res) {
+    try {
+      Medicine.getUnitAll((data) => {
         res.json(data);
       });
     } catch (error) {}

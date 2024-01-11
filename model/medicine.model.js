@@ -49,7 +49,11 @@ Medicine.getMaxIdUnit = function (callback) {
 
 Medicine.getAllMedCurr = function (data, callback) {
   db.query(
-    `CALL pagination_medicine(${data.isDeleted}, ${data.numRecord}, ${data.startRecord}, @${data.totalRecord})`,
+    `CALL pagination_medicine(${
+      data.search_value ? "'" + data.search_value + "'" : null
+    }, ${data.isDeleted}, ${data.numRecord}, ${data.startRecord}, @${
+      data.totalRecord
+    })`,
     (err, res) => {
       if (err) {
         callback(err);
@@ -81,15 +85,21 @@ Medicine.get_allCurrent = function (result) {
 };
 
 Medicine.getCheckWh = function (callback) {
-  db.query("CALL check_wh()", (err, response) => {
+  db.query("CALL get_synthetic_importdetail()", (err, response) => {
     if (err) {
       callback(err);
-    } else callback(response);
+    } else {
+      response[0].forEach((element) => {
+        element["sl_tong"] = Number.parseInt(element["sl_tong"]);
+        element["soluong_lon"] = Number.parseInt(element["soluong_lon"]);
+      });
+      callback(response);
+    }
   });
 };
 
 Medicine.getCheckWhByName = function (data, callback) {
-  db.query("CALL check_wh()", (err, response) => {
+  db.query("CALL get_synthetic_importdetail()", (err, response) => {
     if (err || response[0].length === 0) {
       callback(null);
     } else {
@@ -146,10 +156,26 @@ Medicine.getByName = function (data, callback) {
 };
 
 Medicine.create = function (data, callback) {
+  // dbq = `INSERT INTO medicine (sdk, han_sdk, ten, hoat_chat, ham_luong, sqd, nam_cap, dot_cap, dang_bao_che, dong_goi, tieu_chuan, han_dung, cty_dk, dchi_ctydk, cty_sx, dchi_ctysx, nhom_thuoc, don_vi_duoc, don_gia) VALUES ('${data.sdk}', '${data.han_sdk}', '${data.ten}', '${data.hoat_chat}', '${data.ham_luong}', '${data.sqd}', '${data.nam_cap}', '${data.dot_cap}', '${data.dang_bao_che}', '${data.dong_goi}', '${data.tieu_chuan}', '${data.han_dung}', '${data.cty_dk}', '${data.dchi_ctydk}', '${data.cty_sx}', '${data.dchi_ctysx}', ${data.nhom_thuoc}, ${data.don_vi_duoc}, ${data.don_gia}); INSERT INTO `
+
   db.query("INSERT INTO medicine SET ?", data, (err, response) => {
     if (err) {
       callback(err);
     } else callback({ id: response.insertId, ...data });
+  });
+};
+
+Medicine.updateCount = function ({ data }, callback) {
+  dbq = "";
+  data.forEach((item) => {
+    dbq += `UPDATE medicine SET imported_count=imported_count + ${item.sl_tong} WHERE id=${item.med_id};`;
+  });
+  db.query(dbq, (err, response) => {
+    if (err) {
+      callback(err);
+    } else {
+      callback(response);
+    }
   });
 };
 
@@ -164,14 +190,6 @@ Medicine.delete = function (id, callback) {
 };
 
 Medicine.update = function (id, data, callback) {
-  // var currentDate = new Date();
-  // var datetime =
-  //   currentDate.getFullYear() +
-  //   "/" +
-  //   (currentDate.getMonth() + 1) +
-  //   "/" +
-  //   currentDate.getDate();
-
   db.query(
     "UPDATE medicine SET sdk=?, han_sdk=?, ten=?, hoat_chat=?, ham_luong=?, sqd=?, nam_cap=?, dot_cap=?, dang_bao_che=?, dong_goi=?, han_dung=?, cty_dk=?, dchi_ctydk=?, cty_sx=?, dchi_ctysx=?, don_gia=? WHERE ID=?",
     [
@@ -269,13 +287,25 @@ Medicine.restoreMed = function (id, callback) {
 
 Medicine.getUnitMed = function (data, callback) {
   db.query(
-    `CALL pagination_unitmed(${data.isDeleted}, ${data.numRecord}, ${data.startRecord}, @${data.totalRecord})`,
+    `CALL pagination_unitmed(${
+      data.search_value ? "'" + data.search_value + "'" : null
+    }, ${data.isDeleted}, ${data.numRecord}, ${data.startRecord}, @${
+      data.totalRecord
+    })`,
     (err, res) => {
       if (err) {
         callback(err);
       } else callback(res);
     }
   );
+};
+
+Medicine.getUnitAll = function (callback) {
+  db.query("SELECT * FROM unit_med", (err, res) => {
+    if (err) {
+      callback(err);
+    } else callback(res);
+  });
 };
 
 Medicine.addUnitMed = function (data, callback) {
@@ -400,7 +430,11 @@ Medicine.resGroupMed = function (id, callback) {
 
 Medicine.getGrMedCurr = function (data, callback) {
   db.query(
-    `CALL pagination_groupmed(${data.isDeleted}, ${data.numRecord}, ${data.startRecord}, @${data.totalRecord})`,
+    `CALL pagination_groupmed(${
+      data.search_value ? "'" + data.search_value + "'" : null
+    }, ${data.isDeleted}, ${data.numRecord}, ${data.startRecord}, @${
+      data.totalRecord
+    })`,
     (err, res) => {
       if (err) {
         callback(err);

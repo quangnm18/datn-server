@@ -50,6 +50,14 @@ class SellController {
     } catch (error) {}
   }
 
+  getSaleDetail(req, res) {
+    try {
+      Sell.getSaleDetail(req.query, (data) => {
+        res.json(data);
+      });
+    } catch (error) {}
+  }
+
   getSaleDetailByIvCode(req, res) {
     try {
       Sell.getSaleDetailByIvCode(req.query, (data) => {
