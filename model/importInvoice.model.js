@@ -136,8 +136,21 @@ ImportIv.getListInvoice = function (callback) {
 };
 
 ImportIv.getPaginateListIv = function (data, callback) {
+  let date_start = data.date_start;
+  let date_to = data.date_to;
+  if (date_start === null || date_start === "" || date_start === undefined) {
+    date_start = "1800-01-01";
+  }
+  if (date_to === null || date_to === "" || date_to === undefined) {
+    date_to = "3000-01-01";
+  }
+
   db.query(
-    `CALL pagination_iptcp(${data.isDeleted}, ${data.numRecord}, ${data.startRecord}, @${data.totalRecord})`,
+    `CALL pagination_iptcp('${date_start}', '${date_to}', ${
+      data.search_value ? "'" + data.search_value + "'" : null
+    }, ${data.isDeleted}, ${data.numRecord}, ${data.startRecord}, @${
+      data.totalRecord
+    })`,
     (err, res) => {
       if (err) {
         callback(err);
@@ -157,8 +170,17 @@ ImportIv.getAllDetail = function (callback) {
 };
 
 ImportIv.getPaginateDetail = function (data, callback) {
+  let date_start = data.date_start;
+  let date_to = data.date_to;
+  if (date_start === null || date_start === "" || date_start === undefined) {
+    date_start = "1800-01-01";
+  }
+  if (date_to === null || date_to === "" || date_to === undefined) {
+    date_to = "3000-01-01";
+  }
+
   db.query(
-    `CALL pagination_iptdetail(${
+    `CALL pagination_iptdetail('${date_start}', '${date_to}', ${
       data.search_value ? "'" + data.search_value + "'" : null
     }, ${data.isImported}, ${data.isDeleted}, ${data.numRecord}, ${
       data.startRecord
@@ -175,6 +197,18 @@ ImportIv.getDetailsByCode = function (data, callback) {
   db.query(
     "SELECT * FROM ipt_detail WHERE ma_hoa_don = ? ",
     data.q,
+    (err, response) => {
+      if (err) {
+        callback(err);
+      } else callback(response);
+    }
+  );
+};
+
+ImportIv.getDetailsByMedId = function (data, callback) {
+  db.query(
+    "SELECT * FROM ipt_detail WHERE med_id = ? ",
+    data,
     (err, response) => {
       if (err) {
         callback(err);
@@ -259,6 +293,19 @@ ImportIv.hardDelIvDetail = function (id, callback) {
       callback(response);
     }
   });
+};
+
+ImportIv.updateIvDetail = function (data, callback) {
+  db.query(
+    `UPDATE ipt_detail SET han_dung='${data.han_dung}', so_lo='${data.so_lo}' WHERE id=${data.id}`,
+    (err, res) => {
+      if (err) {
+        callback(err);
+      } else {
+        callback(res);
+      }
+    }
+  );
 };
 
 //chap thuan phieu nhap hang

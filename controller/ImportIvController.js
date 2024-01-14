@@ -11,21 +11,27 @@ class ImportIvController {
   }
 
   createInvoice(req, res) {
-    ImportIv.createInvoice(req.body, (data) => {
-      res.json(data);
-    });
+    try {
+      ImportIv.createInvoice(req.body, (data) => {
+        res.json(data);
+      });
+    } catch (error) {}
   }
 
   createInvoiceDetail(req, res) {
-    ImportIv.createInvoiceDetail(req.body, (data) => {
-      res.json(data);
-    });
+    try {
+      ImportIv.createInvoiceDetail(req.body, (data) => {
+        res.json(data);
+      });
+    } catch (error) {}
   }
 
   getListInvoice(req, res) {
-    ImportIv.getListInvoice((data) => {
-      res.json(data);
-    });
+    try {
+      ImportIv.getListInvoice((data) => {
+        res.json(data);
+      });
+    } catch (error) {}
   }
 
   getPaginateListIv(req, res) {
@@ -39,9 +45,11 @@ class ImportIvController {
   //get detail
 
   getAllDetail(req, res) {
-    ImportIv.getAllDetail((data) => {
-      res.json(data);
-    });
+    try {
+      ImportIv.getAllDetail((data) => {
+        res.json(data);
+      });
+    } catch (error) {}
   }
 
   getPaginateDetail(req, res) {
@@ -53,21 +61,35 @@ class ImportIvController {
   }
 
   getDetailsByCode(req, res) {
-    ImportIv.getDetailsByCode(req.query, (data) => {
-      res.json(data);
-    });
+    try {
+      ImportIv.getDetailsByCode(req.query, (data) => {
+        res.json(data);
+      });
+    } catch (error) {}
+  }
+
+  getDetailsByMedId(req, res) {
+    try {
+      ImportIv.getDetailsByMedId(req.params.id, (data) => {
+        res.json(data);
+      });
+    } catch (error) {}
   }
 
   getAllDetailsImported(req, res) {
-    ImportIv.getAllDetailsImported((data) => {
-      res.json(data);
-    });
+    try {
+      ImportIv.getAllDetailsImported((data) => {
+        res.json(data);
+      });
+    } catch (error) {}
   }
 
   softDeleteInvoice(req, res) {
-    ImportIv.softDeleteInvoice(req.params.id, (data) => {
-      res.json(data);
-    });
+    try {
+      ImportIv.softDeleteInvoice(req.params.id, (data) => {
+        res.json(data);
+      });
+    } catch (error) {}
   }
 
   softDeleteIvDetail(req, res) {
@@ -121,6 +143,14 @@ class ImportIvController {
   hardDelIvDetail(req, res) {
     try {
       ImportIv.hardDelIvDetail(req.params.id, (data) => {
+        res.json(data);
+      });
+    } catch (error) {}
+  }
+
+  updateIvDetail(req, res) {
+    try {
+      ImportIv.updateIvDetail(req.body, (data) => {
         res.json(data);
       });
     } catch (error) {}

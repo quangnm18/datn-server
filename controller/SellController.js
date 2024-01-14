@@ -101,21 +101,27 @@ class SellController {
   // /sell/listall
 
   getAllInvoiceSale(req, res) {
-    Sell.get_all((data) => {
-      res.json(data);
-    });
+    try {
+      Sell.get_all((data) => {
+        res.json(data);
+      });
+    } catch (error) {}
   }
 
   getByDate(req, res) {
-    Sell.getByDate(dataReq, (response) => {
-      res.json(response);
-    });
+    try {
+      Sell.getByDate(dataReq, (response) => {
+        res.json(response);
+      });
+    } catch (error) {}
   }
 
   deleteInvoice(req, res) {
-    Sell.delete(req.params.id, (response) => {
-      res.json(response);
-    });
+    try {
+      Sell.delete(req.params.id, (response) => {
+        res.json(response);
+      });
+    } catch (error) {}
   }
 }
 

@@ -3,68 +3,90 @@ var ImportWh = require("../model/ImportWh.model");
 class WarehouseController {
   //[GET] /warehouse/import
   getAllListImport(req, res) {
-    ImportWh.getAllListImport(function (data) {
-      res.json(data);
-    });
+    try {
+      ImportWh.getAllListImport(function (data) {
+        res.json(data);
+      });
+    } catch (error) {}
   }
 
   createImportCp(req, res) {
-    ImportWh.createImportCp(req.body, (data) => res.send(data));
+    try {
+      ImportWh.createImportCp(req.body, (data) => res.send(data));
+    } catch (error) {}
   }
 
   updateImportCp(req, res) {
-    ImportWh.updateImportCp(req.params.id, req.body, (data) => {
-      res.send(data);
-    });
+    try {
+      ImportWh.updateImportCp(req.params.id, req.body, (data) => {
+        res.send(data);
+      });
+    } catch (error) {}
   }
 
   softDeleteImportCp(req, res) {
-    ImportWh.softDeleteImportCp(req.params.id, (data) => {
-      res.json(data);
-    });
+    try {
+      ImportWh.softDeleteImportCp(req.params.id, (data) => {
+        res.json(data);
+      });
+    } catch (error) {}
   }
 
   restoreImportCp(req, res) {
-    ImportWh.restoreImportCp(req.params.id, (data) => {
-      res.json(data);
-    });
+    try {
+      ImportWh.restoreImportCp(req.params.id, (data) => {
+        res.json(data);
+      });
+    } catch (error) {}
   }
 
   deleteImportWh(req, res) {
-    ImportWh.delete(req.params.id, (response) => {
-      res.send(response);
-    });
+    try {
+      ImportWh.delete(req.params.id, (response) => {
+        res.send(response);
+      });
+    } catch (error) {}
   }
 
   softDeleteImportWh(req, res) {
-    ImportWh.softDelete(req.body, (data) => {
-      res.json(data);
-    });
+    try {
+      ImportWh.softDelete(req.body, (data) => {
+        res.json(data);
+      });
+    } catch (error) {}
   }
 
   restoreMed(req, res) {
-    ImportWh.restoreMed(req.params.id, (data) => {
-      res.json(data);
-    });
+    try {
+      ImportWh.restoreMed(req.params.id, (data) => {
+        res.json(data);
+      });
+    } catch (error) {}
   }
 
   //import-details
   getAllImportDetail(req, res) {
-    ImportWh.getAllImportDetail((data) => {
-      res.json(data);
-    });
+    try {
+      ImportWh.getAllImportDetail((data) => {
+        res.json(data);
+      });
+    } catch (error) {}
   }
 
   getImportDetailByIptId(req, res) {
-    ImportWh.getImportDetailByIptId(req.params.id, (data) => {
-      res.json(data);
-    });
+    try {
+      ImportWh.getImportDetailByIptId(req.params.id, (data) => {
+        res.json(data);
+      });
+    } catch (error) {}
   }
 
   createImportDetails(req, res) {
-    ImportWh.createImportDetails(req.body, (data) => {
-      res.json(data);
-    });
+    try {
+      ImportWh.createImportDetails(req.body, (data) => {
+        res.json(data);
+      });
+    } catch (error) {}
   }
 }
 

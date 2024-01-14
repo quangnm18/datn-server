@@ -84,38 +84,45 @@ Medicine.get_allCurrent = function (result) {
   );
 };
 
-Medicine.getCheckWh = function (callback) {
-  db.query("CALL get_synthetic_importdetail()", (err, response) => {
-    if (err) {
-      callback(err);
-    } else {
-      response[0].forEach((element) => {
-        element["sl_tong"] = Number.parseInt(element["sl_tong"]);
-        element["soluong_lon"] = Number.parseInt(element["soluong_lon"]);
-      });
-      callback(response);
+Medicine.getCheckWh = function (data, callback) {
+  db.query(
+    `CALL get_synthetic_importdetail(${data.isDeleted})`,
+    (err, response) => {
+      if (err) {
+        callback(err);
+      } else {
+        response[0].forEach((element) => {
+          element["sl_tong"] = Number.parseInt(element["sl_tong"]);
+          element["soluong_lon"] = Number.parseInt(element["soluong_lon"]);
+        });
+        callback(response);
+      }
     }
-  });
+  );
 };
 
 Medicine.getCheckWhByName = function (data, callback) {
-  db.query("CALL get_synthetic_importdetail()", (err, response) => {
-    if (err || response[0].length === 0) {
-      callback(null);
-    } else {
-      const filltered = response[0].filter((medicine) => {
-        const name = medicine.ten;
-        if (
-          name &&
-          data.q &&
-          name.toLowerCase().includes(data.q.toLowerCase())
-        ) {
-          return medicine;
-        }
-      });
-      callback(filltered);
+  console.log(data.isDeleted);
+  db.query(
+    `CALL get_synthetic_importdetail(${data.isDeleted})`,
+    (err, response) => {
+      if (err || response[0].length === 0) {
+        callback(null);
+      } else {
+        const filltered = response[0].filter((medicine) => {
+          const name = medicine.ten;
+          if (
+            name &&
+            data.q &&
+            name.toLowerCase().includes(data.q.toLowerCase())
+          ) {
+            return medicine;
+          }
+        });
+        callback(filltered);
+      }
     }
-  });
+  );
 };
 
 Medicine.getById = function (id, callback) {
@@ -162,20 +169,6 @@ Medicine.create = function (data, callback) {
     if (err) {
       callback(err);
     } else callback({ id: response.insertId, ...data });
-  });
-};
-
-Medicine.updateCount = function ({ data }, callback) {
-  dbq = "";
-  data.forEach((item) => {
-    dbq += `UPDATE medicine SET imported_count=imported_count + ${item.sl_tong} WHERE id=${item.med_id};`;
-  });
-  db.query(dbq, (err, response) => {
-    if (err) {
-      callback(err);
-    } else {
-      callback(response);
-    }
   });
 };
 

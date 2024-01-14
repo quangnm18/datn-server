@@ -30,11 +30,10 @@ router.get("/medicine/search/*", categoryController.getMedicinesName);
 router.get("/medicinecurrent", categoryController.getAllMedCurrent);
 router.get("/medicine", categoryController.getAllMedicine);
 router.post("/medicine/add", categoryController.createMedicine);
-router.put("/medicine/updatecount", categoryController.updateCount);
 
 router.delete("/medicine/delete/:id", categoryController.deleteMedicine);
 
-router.get("/warehouse", categoryController.getCheckWh);
+router.get("/warehouse*", categoryController.getCheckWh);
 router.get("/warehouse/sellsearch/*", categoryController.getCheckWhByName);
 
 router.get("/medicine/expand/:id", categoryController.getMedicineById);
@@ -58,6 +57,9 @@ router.put("/supplier/softdelete/:id", categoryController.softDelSupplier);
 router.put("/supplier/restore/:id", categoryController.restoreSupplier);
 
 router.delete("/supplier/harddelete/:id", categoryController.hardDelSupplier);
+
+//staff
+router.get("/staff", categoryController.getAllStaff);
 
 //category/unitmed
 

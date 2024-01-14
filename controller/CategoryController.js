@@ -1,5 +1,6 @@
 var Medicine = require("../model/medicine.model");
 var Supplier = require("../model/supplier.model");
+var Staff = require("../model/staff.model");
 
 class CategoryController {
   getMaxIdMed(req, res) {
@@ -36,75 +37,89 @@ class CategoryController {
   }
 
   getAllMedicine(req, res) {
-    Medicine.get_all(function (data) {
-      res.json(data);
-    });
-  }
-
-  getAllMedCurrent(req, res) {
-    Medicine.get_allCurrent((data) => {
-      res.json(data);
-    });
-  }
-
-  getCheckWh(req, res) {
-    Medicine.getCheckWh((data) => {
-      res.json(data);
-    });
-  }
-
-  getCheckWhByName(req, res) {
-    Medicine.getCheckWhByName(req.query, (data) => {
-      res.json(data);
-    });
-  }
-
-  createMedicine(req, res) {
-    Medicine.create(req.body, (data) => res.send(data));
-  }
-
-  updateCount(req, res) {
     try {
-      Medicine.updateCount(req.body, (data) => {
+      Medicine.get_all(function (data) {
         res.json(data);
       });
     } catch (error) {}
   }
 
+  getAllMedCurrent(req, res) {
+    try {
+      Medicine.get_allCurrent((data) => {
+        res.json(data);
+      });
+    } catch (error) {}
+  }
+
+  getCheckWh(req, res) {
+    try {
+      Medicine.getCheckWh(req.query, (data) => {
+        res.json(data);
+      });
+    } catch (error) {}
+  }
+
+  getCheckWhByName(req, res) {
+    try {
+      Medicine.getCheckWhByName(req.query, (data) => {
+        res.json(data);
+      });
+    } catch (error) {}
+  }
+
+  createMedicine(req, res) {
+    try {
+      Medicine.create(req.body, (data) => res.send(data));
+    } catch (error) {}
+  }
+
   deleteMedicine(req, res) {
-    Medicine.delete(req.params.id, (response) => {
-      res.send(response);
-    });
+    try {
+      Medicine.delete(req.params.id, (response) => {
+        res.send(response);
+      });
+    } catch (error) {}
   }
 
   updateMedicine(req, res) {
-    Medicine.update(req.params.id, req.body, (data) => {
-      res.send(data);
-    });
+    try {
+      Medicine.update(req.params.id, req.body, (data) => {
+        res.send(data);
+      });
+    } catch (error) {}
   }
 
   softDeleteMedicine(req, res) {
-    Medicine.softDelete(req.body, (data) => {
-      res.json(data);
-    });
+    try {
+      Medicine.softDelete(req.body, (data) => {
+        res.json(data);
+      });
+    } catch (error) {}
   }
 
   restoreMed(req, res) {
-    Medicine.restoreMed(req.params.id, (data) => {
-      res.json(data);
-    });
+    try {
+      Medicine.restoreMed(req.params.id, (data) => {
+        res.json(data);
+      });
+    } catch (error) {}
   }
 
   getMedicinesName(req, res) {
-    Medicine.getByName(req.query, (data) => {
-      res.send(data);
-    });
+    try {
+      Medicine.getByName(req.query, (data) => {
+        res.send(data);
+      });
+    } catch (error) {}
   }
 
   getMedicineById(req, res) {
-    Medicine.getById(req.params.id, (data) => {
-      res.json(data);
-    });
+    try {
+      Medicine.getById(req.params.id, (data) => {
+        res.json(data);
+      });
+    } catch (error) {}
   }
 
   //unit medicine
@@ -126,70 +141,92 @@ class CategoryController {
   }
 
   addUnitMed(req, res) {
-    Medicine.addUnitMed(req.body, (data) => {
-      res.json(data);
-    });
+    try {
+      Medicine.addUnitMed(req.body, (data) => {
+        res.json(data);
+      });
+    } catch (error) {}
   }
 
   updateUnitMed(req, res) {
-    Medicine.updateUnitMed(req.params.id, req.body, (data) => {
-      res.json(data);
-    });
+    try {
+      Medicine.updateUnitMed(req.params.id, req.body, (data) => {
+        res.json(data);
+      });
+    } catch (error) {}
   }
 
   softDeleteUnitMed(req, res) {
-    Medicine.softDeleteUnitMed(req.params.id, (data) => {
-      res.json(data);
-    });
+    try {
+      Medicine.softDeleteUnitMed(req.params.id, (data) => {
+        res.json(data);
+      });
+    } catch (error) {}
   }
 
   resUnitMed(req, res) {
-    Medicine.resUnitMed(req.params.id, (data) => {
-      res.json(data);
-    });
+    try {
+      Medicine.resUnitMed(req.params.id, (data) => {
+        res.json(data);
+      });
+    } catch (error) {}
   }
 
   hardDelUnitMed(req, res) {
-    Medicine.hardDelUnit(req.params.id, (data) => {
-      res.json(data);
-    });
+    try {
+      Medicine.hardDelUnit(req.params.id, (data) => {
+        res.json(data);
+      });
+    } catch (error) {}
   }
 
   //group medicine
   getGroupMed(req, res) {
-    Medicine.getGroupMed((data) => {
-      res.json(data);
-    });
+    try {
+      Medicine.getGroupMed((data) => {
+        res.json(data);
+      });
+    } catch (error) {}
   }
 
   hardDeleteGr(req, res) {
-    Medicine.hardDeleteGr(req.params.id, (data) => {
-      res.json(data);
-    });
+    try {
+      Medicine.hardDeleteGr(req.params.id, (data) => {
+        res.json(data);
+      });
+    } catch (error) {}
   }
 
   addGroupMed(req, res) {
-    Medicine.addGroupMed(req.body, (data) => {
-      res.json(data);
-    });
+    try {
+      Medicine.addGroupMed(req.body, (data) => {
+        res.json(data);
+      });
+    } catch (error) {}
   }
 
   updateGroupMed(req, res) {
-    Medicine.updateGroupMed(req.params.id, req.body, (data) => {
-      res.json(data);
-    });
+    try {
+      Medicine.updateGroupMed(req.params.id, req.body, (data) => {
+        res.json(data);
+      });
+    } catch (error) {}
   }
 
   softDeleteGrMed(req, res) {
-    Medicine.softDeleteGrMed(req.params.id, (data) => {
-      res.json(data);
-    });
+    try {
+      Medicine.softDeleteGrMed(req.params.id, (data) => {
+        res.json(data);
+      });
+    } catch (error) {}
   }
 
   resGroupMed(req, res) {
-    Medicine.resGroupMed(req.params.id, (data) => {
-      res.json(data);
-    });
+    try {
+      Medicine.resGroupMed(req.params.id, (data) => {
+        res.json(data);
+      });
+    } catch (error) {}
   }
 
   getGrMedCurr(req, res) {
@@ -218,31 +255,50 @@ class CategoryController {
   }
 
   createSupplier(req, res) {
-    Supplier.create(req.body, (data) => res.json(data));
+    try {
+      Supplier.create(req.body, (data) => res.json(data));
+    } catch (error) {}
   }
 
   updateSupplier(req, res) {
-    Supplier.update(req.params.id, req.body, (data) => {
-      res.send(data);
-    });
+    try {
+      Supplier.update(req.params.id, req.body, (data) => {
+        res.send(data);
+      });
+    } catch (error) {}
   }
 
   softDelSupplier(req, res) {
-    Supplier.softDeleteSingle(req.params.id, (data) => {
-      res.json(data);
-    });
+    try {
+      Supplier.softDeleteSingle(req.params.id, (data) => {
+        res.json(data);
+      });
+    } catch (error) {}
   }
 
   hardDelSupplier(req, res) {
-    Supplier.hardDelete(req.params.id, (response) => {
-      res.json(response);
-    });
+    try {
+      Supplier.hardDelete(req.params.id, (response) => {
+        res.json(response);
+      });
+    } catch (error) {}
   }
 
   restoreSupplier(req, res) {
-    Supplier.restore(req.params.id, (response) => {
-      res.json(response);
-    });
+    try {
+      Supplier.restore(req.params.id, (response) => {
+        res.json(response);
+      });
+    } catch (error) {}
+  }
+
+  //staff
+  getAllStaff(req, res) {
+    try {
+      Staff.get_all((data) => {
+        res.json(data);
+      });
+    } catch (error) {}
   }
 }
 
