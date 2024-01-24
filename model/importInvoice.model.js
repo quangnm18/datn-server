@@ -29,7 +29,7 @@ ImportIv.getMaxIdIv = function (callback) {
 };
 
 ImportIv.createInvoice = function (
-  { dataDetails, total, tong_ck, newId },
+  { dataDetails, total, tong_ck, tong_vat, newId },
   callback
 ) {
   var currentDate = new Date();
@@ -41,9 +41,9 @@ ImportIv.createInvoice = function (
     currentDate.getDate();
 
   db.query(
-    `INSERT INTO ipt_cp (user_id, createdDate, giatri_nhap, tong_ck, thanh_tien, supplier, status, isDeleted, invoice_code) VALUES (1, "${datetime}", ${
-      total - tong_ck
-    }, ${tong_ck}, ${total}, ${
+    `INSERT INTO ipt_cp (user_id, createdDate, giatri_nhap, tong_ck, tong_vat, thanh_tien, supplier, status, isDeleted, invoice_code) VALUES (1, "${datetime}", ${
+      total + tong_ck - tong_vat
+    }, ${tong_ck}, ${tong_vat}, ${total}, ${
       dataDetails[0].ma_ncc ? dataDetails[0].ma_ncc : "''"
     }, 2, 0, 'IV${newId}')`,
     (err, response) => {

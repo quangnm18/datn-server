@@ -102,24 +102,13 @@ Medicine.getCheckWh = function (data, callback) {
 };
 
 Medicine.getCheckWhByName = function (data, callback) {
-  console.log(data.isDeleted);
   db.query(
-    `CALL get_synthetic_importdetail(${data.isDeleted})`,
+    `CALL get_search_sell('${data.q}' ,${data.isDeleted})`,
     (err, response) => {
       if (err || response[0].length === 0) {
-        callback(null);
+        callback(err);
       } else {
-        const filltered = response[0].filter((medicine) => {
-          const name = medicine.ten;
-          if (
-            name &&
-            data.q &&
-            name.toLowerCase().includes(data.q.toLowerCase())
-          ) {
-            return medicine;
-          }
-        });
-        callback(filltered);
+        callback(response);
       }
     }
   );
@@ -144,7 +133,7 @@ Medicine.getByName = function (data, callback) {
     "SELECT medicine.id, medicine.ten, medicine.sdk, medicine.nhom_thuoc, medicine.don_gia, unit_med.donvi_lon, unit_med.description_unit, unit_med.donvi_nho FROM medicine LEFT JOIN unit_med ON medicine.don_vi_duoc = unit_med.id ",
     (err, response) => {
       if (err || response.length === 0) {
-        callback(null);
+        callback(err);
       } else {
         const filltered = response.filter((medicine) => {
           const name = medicine.ten;

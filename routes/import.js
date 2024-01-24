@@ -30,7 +30,7 @@ router.put("/detail/softdelete/:id", ImportIvController.softDeleteIvDetail);
 //
 //detail //admin
 router.put("/detail/restore/:id", ImportIvController.restoreIvDetail);
-router.delete("/detail/harddelete/:id", ImportIvController.restoreIvDetail); //nguy hiem
+router.delete("/detail/harddelete/:id", ImportIvController.hardDelIvDetail); //nguy hiem
 
 router.put("/acceptiv", ImportIvController.acceptInvoice);
 router.put("/importdetail", ImportIvController.importedIvDetail); // chap thuan nhap chi tiet don nhap vao kho

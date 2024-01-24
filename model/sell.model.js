@@ -49,7 +49,7 @@ Sell.createSaleDetail = function ({ dataInvoice, ma_hoa_don }, callback) {
     currentDate.getDate();
 
   db.query(
-    "INSERT INTO sale_detail (med_id, ten_duoc, loai_dong_goi, so_luong_ban, don_vi_ban, don_gia_ban, thanh_tien, ma_hoa_don, createdAt, isDeleted) VALUES ?",
+    "INSERT INTO sale_detail (med_id, ten_duoc, loai_dong_goi, so_luong_ban, don_vi_ban, don_gia_ban, thanh_tien, ma_hoa_don, createdAt, isDeleted, so_lo_hang) VALUES ?",
     [
       dataInvoice.map((item) => [
         item.med_id,
@@ -62,6 +62,7 @@ Sell.createSaleDetail = function ({ dataInvoice, ma_hoa_don }, callback) {
         "IB" + ma_hoa_don,
         datetime,
         0,
+        item.so_lo_hang,
       ]),
     ],
     (err, response) => {

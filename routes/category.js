@@ -33,8 +33,8 @@ router.post("/medicine/add", categoryController.createMedicine);
 
 router.delete("/medicine/delete/:id", categoryController.deleteMedicine);
 
-router.get("/warehouse*", categoryController.getCheckWh);
 router.get("/warehouse/sellsearch/*", categoryController.getCheckWhByName);
+router.get("/warehouse*", categoryController.getCheckWh);
 
 router.get("/medicine/expand/:id", categoryController.getMedicineById);
 
