@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const { authPage } = require("../middleWare/basicAuth");
 
 const homeController = require("../controller/HomeController");
 
