@@ -20,7 +20,7 @@ const InventoryWh = (item) => {
 
 InventoryWh.getInventoryWh = function (data, callback) {
   db.query(
-    `Call get_test(${
+    `Call get_inventory(${
       data.search_value ? "'" + data.search_value + "'" : null
     }, ${data.numRecord}, ${data.startRecord}, @${data.totalRecord})`,
     (err, response) => {

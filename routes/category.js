@@ -58,8 +58,11 @@ router.put("/supplier/restore/:id", categoryController.restoreSupplier);
 
 router.delete("/supplier/harddelete/:id", categoryController.hardDelSupplier);
 
-//staff
-router.get("/staff", categoryController.getAllStaff);
+//category/user
+router.delete("/users/delete/:id", categoryController.deleteUserById);
+router.get("/users", categoryController.getAllUser);
+router.get("/roles", categoryController.getAllRole);
+router.put("/updateuser", categoryController.updateUser);
 
 //category/unitmed
 

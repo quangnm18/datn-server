@@ -2,6 +2,9 @@ const express = require("express");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const jwt = require("jsonwebtoken");
+const fetch = require("node-fetch");
+const axios = require("axios");
+const http = require("http");
 
 const app = express();
 const port = 8081;
@@ -15,10 +18,12 @@ app.use(cookieParser());
 app.use(
   cors({
     origin: ["http://localhost:3000"],
-    methods: ["POST", "GET"],
+    methods: ["POST", "GET", "PUT", "DELETE"],
     credentials: true,
   })
 );
+
+// app.use(cors());
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -35,6 +40,7 @@ const verifyUser = (req, res, next) => {
         req.id = decoded.id;
         req.name = decoded.name;
         req.role = decoded.role;
+        req.ten_role = decoded.ten_role;
         next();
       }
     });
@@ -47,8 +53,18 @@ app.get("/", verifyUser, (req, res) => {
     userId: req.id,
     name: req.name,
     role: req.role,
+    ten_role: req.ten_role,
   });
 });
+
+// var options = {
+//   host: "",
+//   port: 80,
+//   path: "/resource?id=foo&bar=baz",
+//   method: "POST",
+// };
+
+app.get("/loadtemp", () => {});
 
 route(app);
 

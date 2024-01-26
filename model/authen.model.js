@@ -9,7 +9,7 @@ const Authen = (auth) => {
 
 Authen.loginAccount = function (data, callback) {
   const sql =
-    "SELECT r.ten_vai_tro, u.* FROM users u LEFT JOIN role_user r ON u.role_id = r.id WHERE u.user_name = ? AND u.password = ?";
+    "SELECT r.ten_vai_tro, r.ma_vai_tro, u.* FROM users u LEFT JOIN role_user r ON u.role_id = r.id WHERE u.user_name = ? AND u.password = ?";
 
   db.query(sql, [data.username, data.password], (err, response) => {
     if (err) {
@@ -17,10 +17,9 @@ Authen.loginAccount = function (data, callback) {
     }
 
     if (response.length > 0) {
-      console.log(response);
       const id = response[0].ID;
       const name = response[0].Name;
-      const role = response[0].Role;
+      const role = response[0].ma_vai_tro;
       const ten_role = response[0].ten_vai_tro;
       const token = jwt.sign(
         { id, name, role, ten_role },
@@ -35,6 +34,10 @@ Authen.loginAccount = function (data, callback) {
     }
   });
 };
+
+// Authen.logOutAccount = function(callback) {
+
+// }
 
 // };
 

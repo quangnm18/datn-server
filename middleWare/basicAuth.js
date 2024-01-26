@@ -1,16 +1,21 @@
-const authPage = (permission) => {
-  return (res, req, next) => {
-    const role = req.body.role;
-    if (!role) {
-      return res.status(403).json("You not authorized");
-    }
+const jwt = require("jsonwebtoken");
 
-    if (!permission.includes(role)) {
-      return res.status(403).json("You not authorized");
-    }
-
-    next();
-  };
+const authPage = (req, res) => {
+  const token = req.cookies.token;
+  if (!token) {
+    return res.json({ status: "We need token please provide it." });
+  } else {
+    jwt.verify(token, "our-jsonwebtoken-secret-key", (err, decoded) => {
+      if (err) {
+        return res.json({ status: "Authen Error" });
+      } else {
+        req.id = decoded.id;
+        req.name = decoded.name;
+        req.role = decoded.role;
+        req.ten_role = decoded.ten_role;
+      }
+    });
+  }
 };
 
 module.exports = { authPage };

@@ -62,27 +62,27 @@ Medicine.getAllMedCurr = function (data, callback) {
   );
 };
 
-Medicine.get_all = function (result) {
-  db.query(
-    "SELECT medicine.id, medicine.sdk, medicine.han_sdk, medicine.ten, medicine.hoat_chat, medicine.ham_luong, medicine.sqd, medicine.nam_cap, medicine.dot_cap, medicine.dang_bao_che, medicine.dong_goi, medicine.tieu_chuan, medicine.han_dung, medicine.cty_dk, medicine.dchi_ctydk, medicine.cty_sx, medicine.dchi_ctysx, medicine.nhom_thuoc, medicine.don_vi_duoc, medicine.don_gia, medicine.isDeleted, medicine.deletedAt, group_medicine.group_code, group_medicine.ten_nhom_thuoc, unit_med.description_unit, unit_med.unit_code FROM medicine LEFT JOIN group_medicine ON medicine.nhom_thuoc = group_medicine.id LEFT JOIN unit_med ON medicine.don_vi_duoc = unit_med.id ORDER BY id DESC",
-    (err, data) => {
-      if (err) {
-        result(err);
-      } else result(data);
-    }
-  );
-};
+// Medicine.get_all = function (result) {
+//   db.query(
+//     "SELECT medicine.id, medicine.sdk, medicine.han_sdk, medicine.ten, medicine.hoat_chat, medicine.ham_luong, medicine.sqd, medicine.nam_cap, medicine.dot_cap, medicine.dang_bao_che, medicine.dong_goi, medicine.tieu_chuan, medicine.han_dung, medicine.cty_dk, medicine.dchi_ctydk, medicine.cty_sx, medicine.dchi_ctysx, medicine.nhom_thuoc, medicine.don_vi_duoc, medicine.don_gia, medicine.isDeleted, medicine.deletedAt, group_medicine.group_code, group_medicine.ten_nhom_thuoc, unit_med.description_unit, unit_med.unit_code FROM medicine LEFT JOIN group_medicine ON medicine.nhom_thuoc = group_medicine.id LEFT JOIN unit_med ON medicine.don_vi_duoc = unit_med.id ORDER BY id DESC",
+//     (err, data) => {
+//       if (err) {
+//         result(err);
+//       } else result(data);
+//     }
+//   );
+// };
 
-Medicine.get_allCurrent = function (result) {
-  db.query(
-    "SELECT medicine.id, medicine.sdk, medicine.han_sdk, medicine.ten, medicine.hoat_chat, medicine.ham_luong, medicine.sqd, medicine.nam_cap, medicine.dot_cap, medicine.dang_bao_che, medicine.dong_goi, medicine.tieu_chuan, medicine.han_dung, medicine.cty_dk, medicine.dchi_ctydk, medicine.cty_sx, medicine.dchi_ctysx, medicine.nhom_thuoc, medicine.don_vi_duoc, medicine.don_gia, medicine.isDeleted, medicine.deletedAt, group_medicine.group_code, group_medicine.ten_nhom_thuoc, unit_med.description_unit, unit_med.unit_code FROM medicine LEFT JOIN group_medicine ON medicine.nhom_thuoc = group_medicine.id LEFT JOIN unit_med ON medicine.don_vi_duoc = unit_med.id WHERE medicine.isDeleted=0 ORDER BY medicine.id DESC",
-    (err, data) => {
-      if (err) {
-        result(err);
-      } else result(data);
-    }
-  );
-};
+// Medicine.get_allCurrent = function (result) {
+//   db.query(
+//     "SELECT medicine.id, medicine.sdk, medicine.han_sdk, medicine.ten, medicine.hoat_chat, medicine.ham_luong, medicine.sqd, medicine.nam_cap, medicine.dot_cap, medicine.dang_bao_che, medicine.dong_goi, medicine.tieu_chuan, medicine.han_dung, medicine.cty_dk, medicine.dchi_ctydk, medicine.cty_sx, medicine.dchi_ctysx, medicine.nhom_thuoc, medicine.don_vi_duoc, medicine.don_gia, medicine.isDeleted, medicine.deletedAt, group_medicine.group_code, group_medicine.ten_nhom_thuoc, unit_med.description_unit, unit_med.unit_code FROM medicine LEFT JOIN group_medicine ON medicine.nhom_thuoc = group_medicine.id LEFT JOIN unit_med ON medicine.don_vi_duoc = unit_med.id WHERE medicine.isDeleted=0 ORDER BY medicine.id DESC",
+//     (err, data) => {
+//       if (err) {
+//         result(err);
+//       } else result(data);
+//     }
+//   );
+// };
 
 Medicine.getCheckWh = function (data, callback) {
   db.query(
@@ -173,7 +173,7 @@ Medicine.delete = function (id, callback) {
 
 Medicine.update = function (id, data, callback) {
   db.query(
-    "UPDATE medicine SET sdk=?, han_sdk=?, ten=?, hoat_chat=?, ham_luong=?, sqd=?, nam_cap=?, dot_cap=?, dang_bao_che=?, dong_goi=?, han_dung=?, cty_dk=?, dchi_ctydk=?, cty_sx=?, dchi_ctysx=?, don_gia=? WHERE ID=?",
+    "UPDATE medicine SET sdk=?, han_sdk=?, ten=?, hoat_chat=?, ham_luong=?, sqd=?, nam_cap=?, dot_cap=?, dang_bao_che=?, dong_goi=?, han_dung=?, cty_dk=?, dchi_ctydk=?, cty_sx=?, dchi_ctysx=? WHERE ID=?",
     [
       data.sdk,
       data.han_sdk,
@@ -190,7 +190,6 @@ Medicine.update = function (id, data, callback) {
       data.dchi_ctydk,
       data.cty_sx,
       data.dchi_ctysx,
-      data.don_gia,
       id,
     ],
     (err, response) => {

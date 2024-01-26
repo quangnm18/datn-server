@@ -11,6 +11,13 @@ class AuthenController {
       });
     } catch (error) {}
   }
+
+  logOutAccount(req, res) {
+    try {
+      res.clearCookie("token");
+      return res.json({ status: "success" });
+    } catch (error) {}
+  }
 }
 
 module.exports = new AuthenController();

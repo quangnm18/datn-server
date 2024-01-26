@@ -1,7 +1,7 @@
 var Medicine = require("../model/medicine.model");
 var Supplier = require("../model/supplier.model");
 var Staff = require("../model/staff.model");
-
+const { authPage } = require("../middleWare/basicAuth");
 class CategoryController {
   getMaxIdMed(req, res) {
     try {
@@ -69,40 +69,56 @@ class CategoryController {
   }
 
   createMedicine(req, res) {
+    authPage(req, res);
     try {
-      Medicine.create(req.body, (data) => res.send(data));
+      if (req.role === "ADM" || req.role === "STFW") {
+        Medicine.create(req.body, (data) => res.json(data));
+      } else res.json("fail");
     } catch (error) {}
   }
 
   deleteMedicine(req, res) {
+    //xoa cung
+    authPage(req, res);
     try {
-      Medicine.delete(req.params.id, (response) => {
-        res.send(response);
-      });
+      if (req.role === "ADM") {
+        Medicine.delete(req.params.id, (response) => {
+          res.json(response);
+        });
+      } else res.json("fail");
     } catch (error) {}
   }
 
   updateMedicine(req, res) {
+    authPage(req, res);
     try {
-      Medicine.update(req.params.id, req.body, (data) => {
-        res.send(data);
-      });
+      if (req.role === "ADM" || req.role === "STFW") {
+        Medicine.update(req.params.id, req.body, (data) => {
+          res.json(data);
+        });
+      } else res.json("fail");
     } catch (error) {}
   }
 
   softDeleteMedicine(req, res) {
+    authPage(req, res);
     try {
-      Medicine.softDelete(req.body, (data) => {
-        res.json(data);
-      });
+      if (req.role === "ADM" || req.role === "STFW") {
+        Medicine.softDelete(req.body, (data) => {
+          res.json(data);
+        });
+      } else res.json("fail");
     } catch (error) {}
   }
 
   restoreMed(req, res) {
+    authPage(req, res);
     try {
-      Medicine.restoreMed(req.params.id, (data) => {
-        res.json(data);
-      });
+      if (req.role === "ADM") {
+        Medicine.restoreMed(req.params.id, (data) => {
+          res.json(data);
+        });
+      } else res.json("fail");
     } catch (error) {}
   }
 
@@ -141,42 +157,57 @@ class CategoryController {
   }
 
   addUnitMed(req, res) {
+    authPage(req, res);
     try {
-      Medicine.addUnitMed(req.body, (data) => {
-        res.json(data);
-      });
+      if (req.role === "ADM" || req.role === "STFW") {
+        Medicine.addUnitMed(req.body, (data) => {
+          res.json(data);
+        });
+      } else res.json("fail");
     } catch (error) {}
   }
 
   updateUnitMed(req, res) {
+    authPage(req, res);
     try {
-      Medicine.updateUnitMed(req.params.id, req.body, (data) => {
-        res.json(data);
-      });
+      if (req.role === "ADM" || req.role === "STFW") {
+        Medicine.updateUnitMed(req.params.id, req.body, (data) => {
+          res.json(data);
+        });
+      } else res.json("fail");
     } catch (error) {}
   }
 
   softDeleteUnitMed(req, res) {
+    authPage(req, res);
     try {
-      Medicine.softDeleteUnitMed(req.params.id, (data) => {
-        res.json(data);
-      });
+      if (req.role === "ADM" || req.role === "STFW") {
+        Medicine.softDeleteUnitMed(req.params.id, (data) => {
+          res.json(data);
+        });
+      } else res.json("fail");
     } catch (error) {}
   }
 
   resUnitMed(req, res) {
+    authPage(req, res);
     try {
-      Medicine.resUnitMed(req.params.id, (data) => {
-        res.json(data);
-      });
+      if (req.role === "ADM") {
+        Medicine.resUnitMed(req.params.id, (data) => {
+          res.json(data);
+        });
+      } else res.json("fail");
     } catch (error) {}
   }
 
   hardDelUnitMed(req, res) {
+    authPage(req, res);
     try {
-      Medicine.hardDelUnit(req.params.id, (data) => {
-        res.json(data);
-      });
+      if (req.role === "ADM") {
+        Medicine.hardDelUnit(req.params.id, (data) => {
+          res.json(data);
+        });
+      } else res.json("fail");
     } catch (error) {}
   }
 
@@ -190,42 +221,57 @@ class CategoryController {
   }
 
   hardDeleteGr(req, res) {
+    authPage(req, res);
     try {
-      Medicine.hardDeleteGr(req.params.id, (data) => {
-        res.json(data);
-      });
+      if (req.role === "ADM") {
+        Medicine.hardDeleteGr(req.params.id, (data) => {
+          res.json(data);
+        });
+      } else res.json("fail");
     } catch (error) {}
   }
 
   addGroupMed(req, res) {
+    authPage(req, res);
     try {
-      Medicine.addGroupMed(req.body, (data) => {
-        res.json(data);
-      });
+      if (req.role === "ADM" || req.role === "STFW") {
+        Medicine.addGroupMed(req.body, (data) => {
+          res.json(data);
+        });
+      } else res.json("fail");
     } catch (error) {}
   }
 
   updateGroupMed(req, res) {
+    authPage(req, res);
     try {
-      Medicine.updateGroupMed(req.params.id, req.body, (data) => {
-        res.json(data);
-      });
+      if (req.role === "ADM" || req.role === "STFW") {
+        Medicine.updateGroupMed(req.params.id, req.body, (data) => {
+          res.json(data);
+        });
+      } else res.json("fail");
     } catch (error) {}
   }
 
   softDeleteGrMed(req, res) {
+    authPage(req, res);
     try {
-      Medicine.softDeleteGrMed(req.params.id, (data) => {
-        res.json(data);
-      });
+      if (req.role === "ADM" || req.role === "STFW") {
+        Medicine.softDeleteGrMed(req.params.id, (data) => {
+          res.json(data);
+        });
+      } else res.json("fail");
     } catch (error) {}
   }
 
   resGroupMed(req, res) {
+    authPage(req, res);
     try {
-      Medicine.resGroupMed(req.params.id, (data) => {
-        res.json(data);
-      });
+      if (req.role === "ADM") {
+        Medicine.resGroupMed(req.params.id, (data) => {
+          res.json(data);
+        });
+      } else res.json("fail");
     } catch (error) {}
   }
 
@@ -255,47 +301,92 @@ class CategoryController {
   }
 
   createSupplier(req, res) {
+    authPage(req, res);
     try {
-      Supplier.create(req.body, (data) => res.json(data));
+      if (req.role === "ADM" || req.role === "STFW") {
+        Supplier.create(req.body, (data) => res.json(data));
+      } else res.json("fail");
     } catch (error) {}
   }
 
   updateSupplier(req, res) {
+    authPage(req, res);
     try {
-      Supplier.update(req.params.id, req.body, (data) => {
-        res.send(data);
-      });
+      if (req.role === "ADM" || req.role === "STFW") {
+        Supplier.update(req.params.id, req.body, (data) => {
+          res.send(data);
+        });
+      } else res.json("fail");
     } catch (error) {}
   }
 
   softDelSupplier(req, res) {
+    authPage(req, res);
     try {
-      Supplier.softDeleteSingle(req.params.id, (data) => {
-        res.json(data);
-      });
+      if (req.role === "ADM" || req.role === "STFW") {
+        Supplier.softDeleteSingle(req.params.id, (data) => {
+          res.json(data);
+        });
+      } else res.json("fail");
     } catch (error) {}
   }
 
   hardDelSupplier(req, res) {
+    authPage(req, res);
     try {
-      Supplier.hardDelete(req.params.id, (response) => {
-        res.json(response);
-      });
+      if (req.role === "ADM") {
+        Supplier.hardDelete(req.params.id, (response) => {
+          res.json(response);
+        });
+      } else res.json("fail");
     } catch (error) {}
   }
 
   restoreSupplier(req, res) {
+    authPage(req, res);
     try {
-      Supplier.restore(req.params.id, (response) => {
+      if (req.role === "ADM") {
+        Supplier.restore(req.params.id, (response) => {
+          res.json(response);
+        });
+      } else res.json("fail");
+    } catch (error) {}
+  }
+
+  //staff
+  getAllUser(req, res) {
+    try {
+      Staff.getAllUser(req.query, (response) => {
         res.json(response);
       });
     } catch (error) {}
   }
 
-  //staff
-  getAllStaff(req, res) {
+  updateUser(req, res) {
+    authPage(req, res);
     try {
-      Staff.get_all((data) => {
+      if (req.role === "ADM") {
+        Staff.updateUser(req.body, (data) => {
+          res.json(data);
+        });
+      } else res.json("fail");
+    } catch (error) {}
+  }
+
+  deleteUserById(req, res) {
+    authPage(req, res);
+    try {
+      if (req.role === "ADM") {
+        Staff.deleteUser(req.params.id, (data) => {
+          res.json(data);
+        });
+      } else res.json("fail");
+    } catch (error) {}
+  }
+
+  getAllRole(req, res) {
+    try {
+      Staff.getAllRole((data) => {
         res.json(data);
       });
     } catch (error) {}
