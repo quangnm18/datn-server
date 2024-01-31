@@ -55,7 +55,7 @@ ImportIv.createInvoice = function (
 };
 
 ImportIv.createInvoiceDetail = function (
-  { dataDetails, invoice_code },
+  { dataDetails, invoice_code, branch_id },
   callback
 ) {
   var currentDate = new Date();
@@ -69,7 +69,7 @@ ImportIv.createInvoiceDetail = function (
   let dbq = "";
 
   dataDetails.forEach((element) => {
-    dbq += `INSERT INTO ipt_detail (med_id, med, soluong_lon, soluong_tb, soluong_nho, sl_tong, dvt, dong_goi, gianhap_chuaqd, gianhap_daqd, giaban_daqd, thanh_tien, ck, vat, han_dung, so_lo, ma_hoa_don, createdDt_at) VALUES (${
+    dbq += `INSERT INTO ipt_detail (med_id, med, soluong_lon, soluong_tb, soluong_nho, sl_tong, dvt, dong_goi, gianhap_chuaqd, gianhap_daqd, giaban_daqd, thanh_tien, ck, vat, han_dung, so_lo, ma_hoa_don, createdDt_at, branch_id) VALUES (${
       element.med_id
     }, '${element.ten}', ${element.soluong_lon}, ${
       element.soluong_tb ? element.soluong_tb : 0
@@ -81,7 +81,7 @@ ImportIv.createInvoiceDetail = function (
       element.vat ? element.vat : 0
     }, '${element.han_dung}', '${
       element.so_lo
-    }', 'IV${invoice_code}', '${datetime}');`;
+    }', 'IV${invoice_code}', '${datetime}', ${branch_id});`;
   });
 
   db.query(dbq, (err, res) => {
@@ -146,7 +146,7 @@ ImportIv.getPaginateListIv = function (data, callback) {
   }
 
   db.query(
-    `CALL pagination_iptcp('${date_start}', '${date_to}', ${
+    `CALL pagination_iptcp(${data.branch_id}, '${date_start}', '${date_to}', ${
       data.search_value ? "'" + data.search_value + "'" : null
     }, ${data.isDeleted}, ${data.numRecord}, ${data.startRecord}, @${
       data.totalRecord
@@ -154,7 +154,14 @@ ImportIv.getPaginateListIv = function (data, callback) {
     (err, res) => {
       if (err) {
         callback(err);
-      } else callback(res);
+      } else {
+        if (data.branch_id) {
+          const arr = res[0].filter(
+            (item) => item.branch_id === Number.parseInt(data.branch_id)
+          );
+          callback([arr, res[1]]);
+        } else callback(res);
+      }
     }
   );
 };

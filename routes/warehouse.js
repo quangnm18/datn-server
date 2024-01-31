@@ -3,7 +3,7 @@ const router = express.Router();
 
 const whController = require("../controller/WarehouseController");
 
-// /warehouse/import
+// /warehouse
 
 router.get("/", whController.getInventoryWh);
 

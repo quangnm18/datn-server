@@ -52,17 +52,25 @@ class CategoryController {
     } catch (error) {}
   }
 
-  getCheckWh(req, res) {
+  // getCheckWh(req, res) {
+  //   try {
+  //     Medicine.getCheckWh(req.query, (data) => {
+  //       res.json(data);
+  //     });
+  //   } catch (error) {}
+  // }
+
+  getSearchSell(req, res) {
     try {
-      Medicine.getCheckWh(req.query, (data) => {
+      Medicine.getSearchSell(req.query, (data) => {
         res.json(data);
       });
     } catch (error) {}
   }
 
-  getCheckWhByName(req, res) {
+  getSearchImport(req, res) {
     try {
-      Medicine.getCheckWhByName(req.query, (data) => {
+      Medicine.getSearchImport(req.query, (data) => {
         res.json(data);
       });
     } catch (error) {}
@@ -119,14 +127,6 @@ class CategoryController {
           res.json(data);
         });
       } else res.json("fail");
-    } catch (error) {}
-  }
-
-  getMedicinesName(req, res) {
-    try {
-      Medicine.getByName(req.query, (data) => {
-        res.send(data);
-      });
     } catch (error) {}
   }
 
@@ -354,6 +354,17 @@ class CategoryController {
   }
 
   //staff
+  addUser(req, res) {
+    authPage(req, res);
+    try {
+      if (req.role === "ADM") {
+        Staff.addUser(req.body, (data) => {
+          res.json(data);
+        });
+      } else res.json("fail");
+    } catch (error) {}
+  }
+
   getAllUser(req, res) {
     try {
       Staff.getAllUser(req.query, (response) => {

@@ -26,15 +26,17 @@ router.put(
 // / category/medicine/
 
 router.get("/getallmed/*", categoryController.getAllMedCurr);
-router.get("/medicine/search/*", categoryController.getMedicinesName);
+router.get("/medicine/search/*", categoryController.getSearchImport);
+
 router.get("/medicinecurrent", categoryController.getAllMedCurrent);
 router.get("/medicine", categoryController.getAllMedicine);
 router.post("/medicine/add", categoryController.createMedicine);
 
 router.delete("/medicine/delete/:id", categoryController.deleteMedicine);
 
-router.get("/warehouse/sellsearch/*", categoryController.getCheckWhByName);
-router.get("/warehouse*", categoryController.getCheckWh);
+router.get("/warehouse/sellsearch/*", categoryController.getSearchSell);
+
+// router.get("/warehouse*", categoryController.getCheckWh);
 
 router.get("/medicine/expand/:id", categoryController.getMedicineById);
 
@@ -63,6 +65,7 @@ router.delete("/users/delete/:id", categoryController.deleteUserById);
 router.get("/users", categoryController.getAllUser);
 router.get("/roles", categoryController.getAllRole);
 router.put("/updateuser", categoryController.updateUser);
+router.post("/adduser", categoryController.addUser);
 
 //category/unitmed
 

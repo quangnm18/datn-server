@@ -11,10 +11,13 @@ class ImportIvController {
   }
 
   createInvoice(req, res) {
+    authPage(req, res);
     try {
-      ImportIv.createInvoice(req.body, (data) => {
-        res.json(data);
-      });
+      if (req.role === "ADM" || req.role === "STFW") {
+        ImportIv.createInvoice(req.body, (data) => {
+          res.json(data);
+        });
+      } else res.json("fail");
     } catch (error) {}
   }
 

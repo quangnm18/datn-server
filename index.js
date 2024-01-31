@@ -41,6 +41,9 @@ const verifyUser = (req, res, next) => {
         req.name = decoded.name;
         req.role = decoded.role;
         req.ten_role = decoded.ten_role;
+        req.ma_chi_nhanh = decoded.ma_chi_nhanh;
+        req.ten_chi_nhanh = decoded.ten_chi_nhanh;
+        req.id_chi_nhanh = decoded.id_chi_nhanh;
         next();
       }
     });
@@ -54,15 +57,11 @@ app.get("/", verifyUser, (req, res) => {
     name: req.name,
     role: req.role,
     ten_role: req.ten_role,
+    ma_chi_nhanh: req.ma_chi_nhanh,
+    ten_chi_nhanh: req.ten_chi_nhanh,
+    id_chi_nhanh: req.id_chi_nhanh,
   });
 });
-
-// var options = {
-//   host: "",
-//   port: 80,
-//   path: "/resource?id=foo&bar=baz",
-//   method: "POST",
-// };
 
 app.get("/loadtemp", () => {});
 
