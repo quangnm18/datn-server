@@ -11,7 +11,7 @@ router.post("/create", ImportIvController.createInvoice);
 router.post("/createdetail", ImportIvController.createInvoiceDetail);
 
 router.get("/alllistpaginate/*", ImportIvController.getPaginateListIv);
-router.get("/alllist", ImportIvController.getListInvoice);
+// router.get("/alllist", ImportIvController.getListInvoice);
 
 router.get("/alldetail/imported", ImportIvController.getAllDetailsImported);
 router.get("/alldetail/*", ImportIvController.getDetailsByCode);
@@ -33,6 +33,8 @@ router.put("/detail/restore/:id", ImportIvController.restoreIvDetail);
 router.delete("/detail/harddelete/:id", ImportIvController.hardDelIvDetail); //nguy hiem
 
 router.put("/acceptiv", ImportIvController.acceptInvoice);
+router.put("/rejectiv", ImportIvController.rejectInvoice);
+
 router.put("/importdetail", ImportIvController.importedIvDetail); // chap thuan nhap chi tiet don nhap vao kho
 
 module.exports = router;

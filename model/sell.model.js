@@ -39,7 +39,10 @@ Sell.createInvoice = function (data, callback) {
   );
 };
 
-Sell.createSaleDetail = function ({ dataInvoice, ma_hoa_don }, callback) {
+Sell.createSaleDetail = function (
+  { dataInvoice, ma_hoa_don, branch_id },
+  callback
+) {
   var currentDate = new Date();
   var datetime =
     currentDate.getFullYear() +
@@ -49,7 +52,7 @@ Sell.createSaleDetail = function ({ dataInvoice, ma_hoa_don }, callback) {
     currentDate.getDate();
 
   db.query(
-    "INSERT INTO sale_detail (med_id, ten_duoc, loai_dong_goi, so_luong_ban, don_vi_ban, don_gia_ban, thanh_tien, ma_hoa_don, createdAt, isDeleted, so_lo_hang) VALUES ?",
+    "INSERT INTO sale_detail (med_id, ten_duoc, loai_dong_goi, so_luong_ban, don_vi_ban, don_gia_ban, thanh_tien, ma_hoa_don, createdAt, isDeleted, so_lo_hang, branch_id) VALUES ?",
     [
       dataInvoice.map((item) => [
         item.med_id,
@@ -63,6 +66,7 @@ Sell.createSaleDetail = function ({ dataInvoice, ma_hoa_don }, callback) {
         datetime,
         0,
         item.so_lo_hang,
+        branch_id,
       ]),
     ],
     (err, response) => {
@@ -123,8 +127,31 @@ Sell.getAllSaleDetailCurr = function (callback) {
 };
 
 Sell.getSaleDetail = function (data, callback) {
+  let date_start = data.date_start;
+  let date_to = data.date_to;
+  if (date_start === null || date_start === "" || date_start === undefined) {
+    date_start = "1800-01-01";
+  }
+  if (date_to === null || date_to === "" || date_to === undefined) {
+    date_to = "3000-01-01";
+  }
+
+  let branch_id = data.branch_id;
+  if (branch_id === null || branch_id === undefined || branch_id === "0") {
+    branch_id = null;
+  }
+
+  let group_id = data.group_id;
+  if (group_id === null || group_id === undefined || group_id === "0") {
+    group_id = null;
+  }
+
   db.query(
-    `CALL pagination_saledetail(${data.isDeleted}, ${data.numRecord}, ${data.startRecord}, @${data.totalRecord})`,
+    `CALL pagination_saledetail(${group_id}, ${branch_id}, '${date_start}', '${date_to}', ${
+      data.search_value ? "'" + data.search_value + "'" : null
+    }, ${data.isDeleted}, ${data.numRecord}, ${data.startRecord}, @${
+      data.totalRecord
+    })`,
     (err, res) => {
       if (err) {
         callback(err);

@@ -1,4 +1,5 @@
 var ImportIv = require("../model/importInvoice.model");
+const { authPage } = require("../middleWare/basicAuth");
 
 class ImportIvController {
   // /importlist/create
@@ -22,26 +23,32 @@ class ImportIvController {
   }
 
   createInvoiceDetail(req, res) {
+    authPage(req, res);
     try {
-      ImportIv.createInvoiceDetail(req.body, (data) => {
-        res.json(data);
-      });
+      if (req.role === "ADM" || req.role === "STFW") {
+        ImportIv.createInvoiceDetail(req.body, (data) => {
+          res.json(data);
+        });
+      } else res.json("fail");
     } catch (error) {}
   }
 
-  getListInvoice(req, res) {
-    try {
-      ImportIv.getListInvoice((data) => {
-        res.json(data);
-      });
-    } catch (error) {}
-  }
+  // getListInvoice(req, res) {
+  //   try {
+  //     ImportIv.getListInvoice((data) => {
+  //       res.json(data);
+  //     });
+  //   } catch (error) {}
+  // }
 
   getPaginateListIv(req, res) {
+    authPage(req, res);
     try {
-      ImportIv.getPaginateListIv(req.query, (data) => {
-        res.json(data);
-      });
+      if (req.role === "ADM" || req.role === "STFW" || req.role === "ADMA") {
+        ImportIv.getPaginateListIv(req.query, (data) => {
+          res.json(data);
+        });
+      }
     } catch (error) {}
   }
 
@@ -106,6 +113,14 @@ class ImportIvController {
   acceptInvoice(req, res) {
     try {
       ImportIv.acceptInvoice(req.body, (data) => {
+        res.json(data);
+      });
+    } catch (error) {}
+  }
+
+  rejectInvoice(req, res) {
+    try {
+      ImportIv.rejectInvoice(req.body, (data) => {
         res.json(data);
       });
     } catch (error) {}

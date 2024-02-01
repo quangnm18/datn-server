@@ -337,11 +337,14 @@ Medicine.hardDelUnit = function (id, callback) {
 
 //group Medicine
 Medicine.getGroupMed = function (callback) {
-  db.query("SELECT * FROM group_medicine ORDER BY id DESC", (err, response) => {
-    if (err) {
-      callback(err);
-    } else callback(response);
-  });
+  db.query(
+    "SELECT * FROM group_medicine ORDER BY ten_nhom_thuoc",
+    (err, response) => {
+      if (err) {
+        callback(err);
+      } else callback(response);
+    }
+  );
 };
 
 Medicine.hardDeleteGr = function (id, callback) {

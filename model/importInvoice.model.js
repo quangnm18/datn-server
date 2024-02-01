@@ -29,7 +29,7 @@ ImportIv.getMaxIdIv = function (callback) {
 };
 
 ImportIv.createInvoice = function (
-  { dataDetails, total, tong_ck, tong_vat, newId },
+  { dataDetails, total, tong_ck, tong_vat, newId, userId },
   callback
 ) {
   var currentDate = new Date();
@@ -41,7 +41,7 @@ ImportIv.createInvoice = function (
     currentDate.getDate();
 
   db.query(
-    `INSERT INTO ipt_cp (user_id, createdDate, giatri_nhap, tong_ck, tong_vat, thanh_tien, supplier, status, isDeleted, invoice_code) VALUES (1, "${datetime}", ${
+    `INSERT INTO ipt_cp (user_id, createdDate, giatri_nhap, tong_ck, tong_vat, thanh_tien, supplier, status, isDeleted, invoice_code) VALUES (${userId}, "${datetime}", ${
       total + tong_ck - tong_vat
     }, ${tong_ck}, ${tong_vat}, ${total}, ${
       dataDetails[0].ma_ncc ? dataDetails[0].ma_ncc : "''"
@@ -122,18 +122,18 @@ ImportIv.createInvoiceDetail = function (
   // );
 };
 
-ImportIv.getListInvoice = function (callback) {
-  db.query(
-    "SELECT ipt_cp.id, ipt_cp.createdDate, ipt_cp.giatri_nhap, ipt_cp.tong_ck, ipt_cp.thanh_tien, ipt_cp.status, ipt_cp.updatedStatusDate, ipt_cp.isDeleted, ipt_cp.deletedAt, ipt_cp.invoice_code, users.Name, supplier.ten_ncc FROM ipt_cp LEFT JOIN users ON ipt_cp.user_id = users.ID LEFT JOIN supplier ON ipt_cp.supplier = supplier.ID ORDER BY id DESC",
-    (err, response) => {
-      if (err) {
-        callback(err);
-      } else {
-        callback(response);
-      }
-    }
-  );
-};
+// ImportIv.getListInvoice = function (callback) {
+//   db.query(
+//     "SELECT ipt_cp.id, ipt_cp.createdDate, ipt_cp.giatri_nhap, ipt_cp.tong_ck, ipt_cp.thanh_tien, ipt_cp.status, ipt_cp.updatedStatusDate, ipt_cp.isDeleted, ipt_cp.deletedAt, ipt_cp.invoice_code, users.Name, supplier.ten_ncc FROM ipt_cp LEFT JOIN users ON ipt_cp.user_id = users.ID LEFT JOIN supplier ON ipt_cp.supplier = supplier.ID ORDER BY id DESC",
+//     (err, response) => {
+//       if (err) {
+//         callback(err);
+//       } else {
+//         callback(response);
+//       }
+//     }
+//   );
+// };
 
 ImportIv.getPaginateListIv = function (data, callback) {
   let date_start = data.date_start;
@@ -145,8 +145,13 @@ ImportIv.getPaginateListIv = function (data, callback) {
     date_to = "3000-01-01";
   }
 
+  let branch_id = data.branch_id;
+  if (branch_id === null || branch_id === undefined) {
+    branch_id = null;
+  }
+
   db.query(
-    `CALL pagination_iptcp(${data.branch_id}, '${date_start}', '${date_to}', ${
+    `CALL pagination_iptcp(${branch_id}, '${date_start}', '${date_to}', ${
       data.search_value ? "'" + data.search_value + "'" : null
     }, ${data.isDeleted}, ${data.numRecord}, ${data.startRecord}, @${
       data.totalRecord
@@ -186,8 +191,18 @@ ImportIv.getPaginateDetail = function (data, callback) {
     date_to = "3000-01-01";
   }
 
+  let branch_id = data.branch_id;
+  if (branch_id === null || branch_id === undefined || branch_id === "0") {
+    branch_id = null;
+  }
+
+  let group_id = data.group_id;
+  if (group_id === null || group_id === undefined || group_id === "0") {
+    group_id = null;
+  }
+
   db.query(
-    `CALL pagination_iptdetail('${date_start}', '${date_to}', ${
+    `CALL pagination_iptdetail(${group_id}, ${branch_id}, '${date_start}', '${date_to}', ${
       data.search_value ? "'" + data.search_value + "'" : null
     }, ${data.isImported}, ${data.isDeleted}, ${data.numRecord}, ${
       data.startRecord
@@ -325,8 +340,26 @@ ImportIv.acceptInvoice = function (data, callback) {
     "-" +
     currentDate.getDate();
   db.query(
-    `UPDATE ipt_cp SET status=1, updatedStatusDate='${datetime}' WHERE invoice_code='${data.ma_hoa_don}'; UPDATE ipt_detail SET isImported=1 WHERE ma_hoa_don='${data.ma_hoa_don}'; UPDATE`,
+    `UPDATE ipt_cp SET status=1, updatedStatusDate='${datetime}' WHERE invoice_code='${data.ma_hoa_don}'; UPDATE ipt_detail SET isImported=1 WHERE ma_hoa_don='${data.ma_hoa_don}';`,
 
+    (err, res) => {
+      if (err) {
+        callback(err);
+      } else callback(res);
+    }
+  );
+};
+
+ImportIv.rejectInvoice = function (data, callback) {
+  var currentDate = new Date();
+  var datetime =
+    currentDate.getFullYear() +
+    "-" +
+    (currentDate.getMonth() + 1) +
+    "-" +
+    currentDate.getDate();
+  db.query(
+    `UPDATE ipt_cp SET status=0, updatedStatusDate='${datetime}' WHERE invoice_code='${data.ma_hoa_don}'`,
     (err, res) => {
       if (err) {
         callback(err);
