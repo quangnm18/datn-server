@@ -19,8 +19,20 @@ const InventoryWh = (item) => {
 };
 
 InventoryWh.getInventoryWh = function (data, callback) {
+  let branch_id = data.branch_id;
+  if (branch_id === null || branch_id === undefined || branch_id === "0") {
+    branch_id = null;
+  }
+
+  let group_id = data.group_id;
+  if (group_id === null || group_id === undefined || group_id === "0") {
+    group_id = null;
+  }
+
   db.query(
-    `Call get_inventory(${
+    `Call get_inventory(${Number.parseInt(data.sort_col)}, '${
+      data.sort_type
+    }', ${group_id}, ${branch_id}, ${
       data.search_value ? "'" + data.search_value + "'" : null
     }, ${data.numRecord}, ${data.startRecord}, @${data.totalRecord})`,
     (err, response) => {
