@@ -269,7 +269,7 @@ Medicine.getUnitMed = function (data, callback) {
 };
 
 Medicine.getUnitAll = function (callback) {
-  db.query("SELECT * FROM unit_med", (err, res) => {
+  db.query("SELECT * FROM unit_med WHERE isDeleted = 0", (err, res) => {
     if (err) {
       callback(err);
     } else callback(res);
@@ -303,10 +303,24 @@ Medicine.updateUnitMed = function (id, data, callback) {
   );
 };
 
-Medicine.softDeleteUnitMed = function (id, callback) {
+Medicine.softDeleteUnitMed = function (data, callback) {
+  var currentDate = new Date();
+  var datetime =
+    currentDate.getFullYear() +
+    "-" +
+    (currentDate.getMonth() + 1) +
+    "-" +
+    currentDate.getDate() +
+    " " +
+    currentDate.getHours() +
+    ":" +
+    currentDate.getMinutes() +
+    ":" +
+    currentDate.getSeconds();
+
   db.query(
-    "UPDATE unit_med SET isDeleted=1 WHERE id=?",
-    id,
+    "UPDATE unit_med SET isDeleted=1, userId_del=?, deletedAt=? WHERE id=?",
+    [data.userId_del, datetime, data.id],
     (err, response) => {
       if (err) {
         callback(err);

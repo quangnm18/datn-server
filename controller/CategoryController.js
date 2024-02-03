@@ -182,7 +182,7 @@ class CategoryController {
     authPage(req, res);
     try {
       if (req.role === "ADM" || req.role === "STFW") {
-        Medicine.softDeleteUnitMed(req.params.id, (data) => {
+        Medicine.softDeleteUnitMed(req.body, (data) => {
           res.json(data);
         });
       } else res.json("fail");

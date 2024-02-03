@@ -72,16 +72,13 @@ router.post("/adduser", categoryController.addUser);
 router.post("/medicine/unit/add", categoryController.addUnitMed);
 router.put("/medicine/unit/update/:id", categoryController.updateUnitMed);
 router.put("/medicine/unit/restore/:id", categoryController.resUnitMed);
-router.put(
-  "/medicine/unit/softdelete/:id",
-  categoryController.softDeleteUnitMed
-);
+router.put("/medicine/unit/softdelete", categoryController.softDeleteUnitMed);
 router.delete(
   "/medicine/unit/harddelete/:id",
   categoryController.hardDelUnitMed
 );
 
-router.get("/medicineunit/*", categoryController.getUnitMed);
+router.get("/medicineunit", categoryController.getUnitMed);
 router.get("/medicineunitall", categoryController.getUnitAll);
 
 module.exports = router;
