@@ -79,7 +79,7 @@ class CategoryController {
   createMedicine(req, res) {
     authPage(req, res);
     try {
-      if (req.role === "ADM" || req.role === "STFW") {
+      if (req.role === "ADMA" || req.role === "ADM" || req.role === "STFW") {
         Medicine.create(req.body, (data) => res.json(data));
       } else res.json("fail");
     } catch (error) {}
@@ -89,7 +89,7 @@ class CategoryController {
     //xoa cung
     authPage(req, res);
     try {
-      if (req.role === "ADM") {
+      if (req.role === "ADMA" || req.role === "ADM") {
         Medicine.delete(req.params.id, (response) => {
           res.json(response);
         });
@@ -100,7 +100,7 @@ class CategoryController {
   updateMedicine(req, res) {
     authPage(req, res);
     try {
-      if (req.role === "ADM" || req.role === "STFW") {
+      if (req.role === "ADMA" || req.role === "ADM" || req.role === "STFW") {
         Medicine.update(req.params.id, req.body, (data) => {
           res.json(data);
         });
@@ -111,7 +111,7 @@ class CategoryController {
   softDeleteMedicine(req, res) {
     authPage(req, res);
     try {
-      if (req.role === "ADM" || req.role === "STFW") {
+      if (req.role === "ADMA" || req.role === "ADM" || req.role === "STFW") {
         Medicine.softDelete(req.body, (data) => {
           res.json(data);
         });
@@ -122,7 +122,7 @@ class CategoryController {
   restoreMed(req, res) {
     authPage(req, res);
     try {
-      if (req.role === "ADM") {
+      if (req.role === "ADMA" || req.role === "ADM") {
         Medicine.restoreMed(req.params.id, (data) => {
           res.json(data);
         });
@@ -159,7 +159,7 @@ class CategoryController {
   addUnitMed(req, res) {
     authPage(req, res);
     try {
-      if (req.role === "ADM" || req.role === "STFW") {
+      if (req.role === "ADMA" || req.role === "ADM" || req.role === "STFW") {
         Medicine.addUnitMed(req.body, (data) => {
           res.json(data);
         });
@@ -170,7 +170,7 @@ class CategoryController {
   updateUnitMed(req, res) {
     authPage(req, res);
     try {
-      if (req.role === "ADM" || req.role === "STFW") {
+      if (req.role === "ADMA" || req.role === "ADM" || req.role === "STFW") {
         Medicine.updateUnitMed(req.params.id, req.body, (data) => {
           res.json(data);
         });
@@ -181,7 +181,7 @@ class CategoryController {
   softDeleteUnitMed(req, res) {
     authPage(req, res);
     try {
-      if (req.role === "ADM" || req.role === "STFW") {
+      if (req.role === "ADMA" || req.role === "ADM" || req.role === "STFW") {
         Medicine.softDeleteUnitMed(req.body, (data) => {
           res.json(data);
         });
@@ -192,7 +192,7 @@ class CategoryController {
   resUnitMed(req, res) {
     authPage(req, res);
     try {
-      if (req.role === "ADM") {
+      if (req.role === "ADMA" || req.role === "ADM") {
         Medicine.resUnitMed(req.params.id, (data) => {
           res.json(data);
         });
@@ -203,7 +203,7 @@ class CategoryController {
   hardDelUnitMed(req, res) {
     authPage(req, res);
     try {
-      if (req.role === "ADM") {
+      if (req.role === "ADMA" || req.role === "ADM") {
         Medicine.hardDelUnit(req.params.id, (data) => {
           res.json(data);
         });
@@ -223,7 +223,7 @@ class CategoryController {
   hardDeleteGr(req, res) {
     authPage(req, res);
     try {
-      if (req.role === "ADM") {
+      if (req.role === "ADMA" || req.role === "ADM") {
         Medicine.hardDeleteGr(req.params.id, (data) => {
           res.json(data);
         });
@@ -234,7 +234,7 @@ class CategoryController {
   addGroupMed(req, res) {
     authPage(req, res);
     try {
-      if (req.role === "ADM" || req.role === "STFW") {
+      if (req.role === "ADMA" || req.role === "ADM" || req.role === "STFW") {
         Medicine.addGroupMed(req.body, (data) => {
           res.json(data);
         });
@@ -245,7 +245,7 @@ class CategoryController {
   updateGroupMed(req, res) {
     authPage(req, res);
     try {
-      if (req.role === "ADM" || req.role === "STFW") {
+      if (req.role === "ADMA" || req.role === "ADM" || req.role === "STFW") {
         Medicine.updateGroupMed(req.params.id, req.body, (data) => {
           res.json(data);
         });
@@ -256,7 +256,7 @@ class CategoryController {
   softDeleteGrMed(req, res) {
     authPage(req, res);
     try {
-      if (req.role === "ADM" || req.role === "STFW") {
+      if (req.role === "ADMA" || req.role === "ADM" || req.role === "STFW") {
         Medicine.softDeleteGrMed(req.params.id, (data) => {
           res.json(data);
         });
@@ -267,7 +267,7 @@ class CategoryController {
   resGroupMed(req, res) {
     authPage(req, res);
     try {
-      if (req.role === "ADM") {
+      if (req.role === "ADMA" || req.role === "ADM") {
         Medicine.resGroupMed(req.params.id, (data) => {
           res.json(data);
         });

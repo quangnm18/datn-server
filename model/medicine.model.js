@@ -48,8 +48,13 @@ Medicine.getMaxIdUnit = function (callback) {
 //Medicine
 
 Medicine.getAllMedCurr = function (data, callback) {
+  let group_id = data.group_id;
+  if (group_id === null || group_id === undefined || group_id === "0") {
+    group_id = null;
+  }
+
   db.query(
-    `CALL pagination_medicine(${
+    `CALL pagination_medicine(${group_id}, ${
       data.search_value ? "'" + data.search_value + "'" : null
     }, ${data.isDeleted}, ${data.numRecord}, ${data.startRecord}, @${
       data.totalRecord
@@ -160,7 +165,7 @@ Medicine.delete = function (id, callback) {
 
 Medicine.update = function (id, data, callback) {
   db.query(
-    "UPDATE medicine SET sdk=?, han_sdk=?, ten=?, hoat_chat=?, ham_luong=?, sqd=?, nam_cap=?, dot_cap=?, dang_bao_che=?, dong_goi=?, han_dung=?, cty_dk=?, dchi_ctydk=?, cty_sx=?, dchi_ctysx=? WHERE ID=?",
+    "UPDATE medicine SET sdk=?, han_sdk=?, ten=?, hoat_chat=?, ham_luong=?, sqd=?, nam_cap=?, dot_cap=?, dang_bao_che=?, dong_goi=?, han_dung=?, cty_dk=?, dchi_ctydk=?, cty_sx=?, dchi_ctysx=?, nhom_thuoc=?, don_vi_duoc=? WHERE ID=?",
     [
       data.sdk,
       data.han_sdk,
@@ -177,6 +182,8 @@ Medicine.update = function (id, data, callback) {
       data.dchi_ctydk,
       data.cty_sx,
       data.dchi_ctysx,
+      data.nhom_thuoc,
+      data.don_vi_duoc,
       id,
     ],
     (err, response) => {
