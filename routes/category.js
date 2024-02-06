@@ -62,6 +62,8 @@ router.delete("/supplier/harddelete/:id", categoryController.hardDelSupplier);
 
 //category/user
 router.delete("/users/delete/:id", categoryController.deleteUserById);
+router.put("/users/softdelete/:id", categoryController.softDeleteUserById);
+
 router.get("/users", categoryController.getAllUser);
 router.get("/roles", categoryController.getAllRole);
 router.put("/updateuser", categoryController.updateUser);

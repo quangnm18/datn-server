@@ -91,8 +91,26 @@ Sell.getAllListIv = function (callback) {
 };
 
 Sell.getListIv = function (data, callback) {
+  let date_start = data.date_start;
+  let date_to = data.date_to;
+  if (date_start === null || date_start === "" || date_start === undefined) {
+    date_start = "1800-01-01";
+  }
+  if (date_to === null || date_to === "" || date_to === undefined) {
+    date_to = "3000-01-01";
+  }
+
+  let branch_id = data.branch_id;
+  if (branch_id === null || branch_id === undefined || branch_id === "0") {
+    branch_id = null;
+  }
+
   db.query(
-    `CALL pagination_salecp(${data.isDeleted}, ${data.numRecord}, ${data.startRecord}, @${data.totalRecord})`,
+    `CALL pagination_salecp(${branch_id}, '${date_start}', '${date_to}', ${
+      data.search_value ? "'" + data.search_value + "'" : null
+    }, ${data.isDeleted}, ${data.numRecord}, ${data.startRecord}, @${
+      data.totalRecord
+    })`,
     (err, res) => {
       if (err) {
         callback(err);

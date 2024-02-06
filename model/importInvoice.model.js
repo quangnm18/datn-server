@@ -122,19 +122,6 @@ ImportIv.createInvoiceDetail = function (
   // );
 };
 
-// ImportIv.getListInvoice = function (callback) {
-//   db.query(
-//     "SELECT ipt_cp.id, ipt_cp.createdDate, ipt_cp.giatri_nhap, ipt_cp.tong_ck, ipt_cp.thanh_tien, ipt_cp.status, ipt_cp.updatedStatusDate, ipt_cp.isDeleted, ipt_cp.deletedAt, ipt_cp.invoice_code, users.Name, supplier.ten_ncc FROM ipt_cp LEFT JOIN users ON ipt_cp.user_id = users.ID LEFT JOIN supplier ON ipt_cp.supplier = supplier.ID ORDER BY id DESC",
-//     (err, response) => {
-//       if (err) {
-//         callback(err);
-//       } else {
-//         callback(response);
-//       }
-//     }
-//   );
-// };
-
 ImportIv.getPaginateListIv = function (data, callback) {
   let date_start = data.date_start;
   let date_to = data.date_to;
@@ -146,7 +133,7 @@ ImportIv.getPaginateListIv = function (data, callback) {
   }
 
   let branch_id = data.branch_id;
-  if (branch_id === null || branch_id === undefined) {
+  if (branch_id === null || branch_id === undefined || branch_id === "0") {
     branch_id = null;
   }
 
@@ -160,12 +147,7 @@ ImportIv.getPaginateListIv = function (data, callback) {
       if (err) {
         callback(err);
       } else {
-        if (data.branch_id) {
-          const arr = res[0].filter(
-            (item) => item.branch_id === Number.parseInt(data.branch_id)
-          );
-          callback([arr, res[1]]);
-        } else callback(res);
+        callback(res);
       }
     }
   );

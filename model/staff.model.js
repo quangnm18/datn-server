@@ -9,22 +9,20 @@ const Staffs = (staff) => {
 };
 
 Staffs.getAllUser = function (data, callback) {
+  let branch_id = data.branch_id;
+  if (branch_id === null || branch_id === undefined || branch_id === "0") {
+    branch_id = null;
+  }
+
   db.query(
-    `CALL pagination_user('${data.branch_code}' ,${
+    `CALL pagination_user(${branch_id}, ${data.isDeleted}, ${
       data.search_value ? "'" + data.search_value + "'" : null
     }, ${data.numRecord}, ${data.startRecord}, @${data.totalRecord})`,
     (err, res) => {
       if (err) {
         callback(err);
       } else {
-        if (data.branch_code) {
-          const arr = res[0].filter(
-            (item) => item.branch_code === data.branch_code
-          );
-          callback([arr, res[1]]);
-        } else {
-          callback(res);
-        }
+        callback(res);
       }
     }
   );
@@ -43,6 +41,16 @@ Staffs.addUser = function (data, callback) {
 
 Staffs.deleteUser = function (id, callback) {
   db.query("DELETE FROM users WHERE ID = ?", id, (err, response) => {
+    if (err) {
+      callback(err);
+    } else {
+      callback(response);
+    }
+  });
+};
+
+Staffs.softDeleteUser = function (id, callback) {
+  db.query("UPDATE users SET isDeleted=1 WHERE ID = ?", id, (err, response) => {
     if (err) {
       callback(err);
     } else {

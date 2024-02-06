@@ -357,7 +357,7 @@ class CategoryController {
   addUser(req, res) {
     authPage(req, res);
     try {
-      if (req.role === "ADM") {
+      if (req.role === "ADM" || req.role === "ADMA") {
         Staff.addUser(req.body, (data) => {
           res.json(data);
         });
@@ -387,8 +387,19 @@ class CategoryController {
   deleteUserById(req, res) {
     authPage(req, res);
     try {
-      if (req.role === "ADM") {
+      if (req.role === "ADMA") {
         Staff.deleteUser(req.params.id, (data) => {
+          res.json(data);
+        });
+      } else res.json("fail");
+    } catch (error) {}
+  }
+
+  softDeleteUserById(req, res) {
+    authPage(req, res);
+    try {
+      if (req.role === "ADM" || req.role === "ADMA") {
+        Staff.softDeleteUser(req.params.id, (data) => {
           res.json(data);
         });
       } else res.json("fail");
