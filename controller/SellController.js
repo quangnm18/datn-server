@@ -1,4 +1,5 @@
 var Sell = require("../model/sell.model");
+const { authPage } = require("../middleWare/basicAuth");
 
 class SellController {
   getMaxIdIv(req, res) {
@@ -67,18 +68,24 @@ class SellController {
   }
 
   softDelSaleIv(req, res) {
+    authPage(req, res);
     try {
-      Sell.softDelSaleIv(req.params.id, (data) => {
-        res.json(data);
-      });
+      if (req.role === "ADM" || req.role === "STFS") {
+        Sell.softDelSaleIv(req.body, (data) => {
+          res.json(data);
+        });
+      } else res.json("fail");
     } catch (error) {}
   }
 
   restoreSaleIv(req, res) {
+    authPage(req, res);
     try {
-      Sell.restoreSaleIv(req.params.id, (data) => {
-        res.json(data);
-      });
+      if (req.role === "ADM") {
+        Sell.restoreSaleIv(req.body, (data) => {
+          res.json(data);
+        });
+      } else res.json("fail");
     } catch (error) {}
   }
 

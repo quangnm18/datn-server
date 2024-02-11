@@ -15,7 +15,9 @@ Staffs.getAllUser = function (data, callback) {
   }
 
   db.query(
-    `CALL pagination_user(${branch_id}, ${data.isDeleted}, ${
+    `CALL pagination_user(${Number.parseInt(data.sort_col)}, '${
+      data.sort_type
+    }', ${branch_id}, ${data.isDeleted}, ${
       data.search_value ? "'" + data.search_value + "'" : null
     }, ${data.numRecord}, ${data.startRecord}, @${data.totalRecord})`,
     (err, res) => {

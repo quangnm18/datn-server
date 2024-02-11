@@ -303,7 +303,7 @@ class CategoryController {
   createSupplier(req, res) {
     authPage(req, res);
     try {
-      if (req.role === "ADM" || req.role === "STFW") {
+      if (req.role === "ADMA" || req.role === "ADM" || req.role === "STFW") {
         Supplier.create(req.body, (data) => res.json(data));
       } else res.json("fail");
     } catch (error) {}
@@ -312,7 +312,7 @@ class CategoryController {
   updateSupplier(req, res) {
     authPage(req, res);
     try {
-      if (req.role === "ADM" || req.role === "STFW") {
+      if (req.role === "ADMA" || req.role === "ADM" || req.role === "STFW") {
         Supplier.update(req.params.id, req.body, (data) => {
           res.send(data);
         });
@@ -323,7 +323,7 @@ class CategoryController {
   softDelSupplier(req, res) {
     authPage(req, res);
     try {
-      if (req.role === "ADM" || req.role === "STFW") {
+      if (req.role === "ADMA" || req.role === "ADM" || req.role === "STFW") {
         Supplier.softDeleteSingle(req.params.id, (data) => {
           res.json(data);
         });
@@ -334,7 +334,7 @@ class CategoryController {
   hardDelSupplier(req, res) {
     authPage(req, res);
     try {
-      if (req.role === "ADM") {
+      if (req.role === "ADMA" || req.role === "ADM") {
         Supplier.hardDelete(req.params.id, (response) => {
           res.json(response);
         });
@@ -345,7 +345,7 @@ class CategoryController {
   restoreSupplier(req, res) {
     authPage(req, res);
     try {
-      if (req.role === "ADM") {
+      if (req.role === "ADMA" || req.role === "ADM") {
         Supplier.restore(req.params.id, (response) => {
           res.json(response);
         });

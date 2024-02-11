@@ -12,11 +12,11 @@ const Supplier = (supplier) => {
 
 Supplier.getAllSup = function (data, callback) {
   db.query(
-    `CALL pagination_supplier(${
-      data.search_value ? "'" + data.search_value + "'" : null
-    }, ${data.isDeleted}, ${data.numRecord}, ${data.startRecord}, @${
-      data.totalRecord
-    })`,
+    `CALL pagination_supplier(${Number.parseInt(data.sort_col)}, '${
+      data.sort_type
+    }', ${data.search_value ? "'" + data.search_value + "'" : null}, ${
+      data.isDeleted
+    }, ${data.numRecord}, ${data.startRecord}, @${data.totalRecord})`,
     (err, res) => {
       if (err) {
         callback(err);

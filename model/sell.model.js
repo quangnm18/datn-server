@@ -1,3 +1,4 @@
+const { response } = require("express");
 const db = require("../common/connect");
 
 const Sell = (sell) => {
@@ -106,7 +107,9 @@ Sell.getListIv = function (data, callback) {
   }
 
   db.query(
-    `CALL pagination_salecp(${branch_id}, '${date_start}', '${date_to}', ${
+    `CALL pagination_salecp(${Number.parseInt(data.sort_col)}, '${
+      data.sort_type
+    }', ${branch_id}, '${date_start}', '${date_to}', ${
       data.search_value ? "'" + data.search_value + "'" : null
     }, ${data.isDeleted}, ${data.numRecord}, ${data.startRecord}, @${
       data.totalRecord
@@ -165,7 +168,9 @@ Sell.getSaleDetail = function (data, callback) {
   }
 
   db.query(
-    `CALL pagination_saledetail(${group_id}, ${branch_id}, '${date_start}', '${date_to}', ${
+    `CALL pagination_saledetail(${Number.parseInt(data.sort_col)}, '${
+      data.sort_type
+    }', ${group_id}, ${branch_id}, '${date_start}', '${date_to}', ${
       data.search_value ? "'" + data.search_value + "'" : null
     }, ${data.isDeleted}, ${data.numRecord}, ${data.startRecord}, @${
       data.totalRecord
@@ -178,30 +183,44 @@ Sell.getSaleDetail = function (data, callback) {
   );
 };
 
-Sell.softDelSaleIv = function (id, callback) {
+Sell.softDelSaleIv = function (data, callback) {
   var currentDate = new Date();
   var datetime =
     currentDate.getFullYear() +
     "-" +
     (currentDate.getMonth() + 1) +
     "-" +
-    currentDate.getDate();
+    currentDate.getDate() +
+    " " +
+    currentDate.getHours() +
+    ":" +
+    currentDate.getMinutes() +
+    ":" +
+    currentDate.getSeconds();
 
-  db.query(
-    "UPDATE sale_cp SET isDeleted=1, deletedAt=? WHERE id=?",
-    [datetime, id],
-    (err, response) => {
-      if (err) {
-        callback(err);
-      } else {
-        callback(response);
-      }
-    }
-  );
+  let dbq = `UPDATE sale_cp SET isDeleted=1, deletedAt='${datetime}', deleted_by=${data.deleted_by} WHERE ma_hoa_don='${data.ma_hoa_don}'; UPDATE sale_detail SET isDeleted=1, deletedAt='${datetime}', deleted_by=${data.deleted_by} WHERE ma_hoa_don='${data.ma_hoa_don}';`;
+  // db.query(
+  //   "UPDATE sale_cp SET isDeleted=1, deletedAt=? WHERE id=?",
+  //   [datetime, id],
+  //   (err, response) => {
+  //     if (err) {
+  //       callback(err);
+  //     } else {
+  //       callback(response);
+  //     }
+  //   }
+  // );
+
+  db.query(dbq, (err, response) => {
+    if (err) {
+      callback(err);
+    } else callback(response);
+  });
 };
 
-Sell.restoreSaleIv = function (id, callback) {
-  db.query("UPDATE sale_cp SET isDeleted=0 WHERE id=?", id, (err, res) => {
+Sell.restoreSaleIv = function (data, callback) {
+  let dbq = `UPDATE sale_cp SET isDeleted=0 WHERE ma_hoa_don='${data.ma_hoa_don}'; UPDATE sale_detail SET isDeleted=0 WHERE ma_hoa_don='${data.ma_hoa_don}';`;
+  db.query(dbq, (err, res) => {
     if (err) {
       callback(err);
     } else callback(res);

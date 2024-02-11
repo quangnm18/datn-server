@@ -138,7 +138,9 @@ ImportIv.getPaginateListIv = function (data, callback) {
   }
 
   db.query(
-    `CALL pagination_iptcp(${branch_id}, '${date_start}', '${date_to}', ${
+    `CALL pagination_iptcp(${Number.parseInt(data.sort_col)}, '${
+      data.sort_type
+    }', ${branch_id}, '${date_start}', '${date_to}', ${
       data.search_value ? "'" + data.search_value + "'" : null
     }, ${data.isDeleted}, ${data.numRecord}, ${data.startRecord}, @${
       data.totalRecord
@@ -184,7 +186,9 @@ ImportIv.getPaginateDetail = function (data, callback) {
   }
 
   db.query(
-    `CALL pagination_iptdetail(${group_id}, ${branch_id}, '${date_start}', '${date_to}', ${
+    `CALL pagination_iptdetail(${Number.parseInt(data.sort_col)}, '${
+      data.sort_type
+    }',${group_id}, ${branch_id}, '${date_start}', '${date_to}', ${
       data.search_value ? "'" + data.search_value + "'" : null
     }, ${data.isImported}, ${data.isDeleted}, ${data.numRecord}, ${
       data.startRecord

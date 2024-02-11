@@ -17,8 +17,8 @@ router.get("/ivdetail*", sellController.getSaleDetail); //co pagination
 
 router.get("/allivdetail/synthetic", sellController.getSyntheticSaleDetail); //khong dung
 
-router.put("/ivlist/softdelete/:id", sellController.softDelSaleIv);
-router.put("/ivlist/restore/:id", sellController.restoreSaleIv);
+router.put("/ivlist/softdelete", sellController.softDelSaleIv);
+router.put("/ivlist/restore", sellController.restoreSaleIv);
 router.delete("/ivlist/harddelete/:id", sellController.hardDelSaleIv);
 
 // /sell/createinvoice

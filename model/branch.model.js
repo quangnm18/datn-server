@@ -25,9 +25,11 @@ Branch.getAllBranch = function (callback) {
 
 Branch.getPaginateBranchs = function (data, callback) {
   db.query(
-    `CALL pagination_branchs(${
-      data.search_value ? "'" + data.search_value + "'" : null
-    }, ${data.numRecord}, ${data.startRecord}, @${data.totalRecord})`,
+    `CALL pagination_branchs(${Number.parseInt(data.sort_col)}, '${
+      data.sort_type
+    }', ${data.search_value ? "'" + data.search_value + "'" : null}, ${
+      data.numRecord
+    }, ${data.startRecord}, @${data.totalRecord})`,
     (err, res) => {
       if (err) {
         callback(err);

@@ -48,7 +48,7 @@ class ImportIvController {
         ImportIv.getPaginateListIv(req.query, (data) => {
           res.json(data);
         });
-      }
+      } else res.json("fail");
     } catch (error) {}
   }
 

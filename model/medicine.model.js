@@ -54,7 +54,9 @@ Medicine.getAllMedCurr = function (data, callback) {
   }
 
   db.query(
-    `CALL pagination_medicine(${group_id}, ${
+    `CALL pagination_medicine(${Number.parseInt(data.sort_col)}, '${
+      data.sort_type
+    }', ${group_id}, ${
       data.search_value ? "'" + data.search_value + "'" : null
     }, ${data.isDeleted}, ${data.numRecord}, ${data.startRecord}, @${
       data.totalRecord
@@ -262,11 +264,11 @@ Medicine.restoreMed = function (id, callback) {
 
 Medicine.getUnitMed = function (data, callback) {
   db.query(
-    `CALL pagination_unitmed(${
-      data.search_value ? "'" + data.search_value + "'" : null
-    }, ${data.isDeleted}, ${data.numRecord}, ${data.startRecord}, @${
-      data.totalRecord
-    })`,
+    `CALL pagination_unitmed(${Number.parseInt(data.sort_col)}, '${
+      data.sort_type
+    }', ${data.search_value ? "'" + data.search_value + "'" : null}, ${
+      data.isDeleted
+    }, ${data.numRecord}, ${data.startRecord}, @${data.totalRecord})`,
     (err, res) => {
       if (err) {
         callback(err);
@@ -422,11 +424,11 @@ Medicine.resGroupMed = function (id, callback) {
 
 Medicine.getGrMedCurr = function (data, callback) {
   db.query(
-    `CALL pagination_groupmed(${
-      data.search_value ? "'" + data.search_value + "'" : null
-    }, ${data.isDeleted}, ${data.numRecord}, ${data.startRecord}, @${
-      data.totalRecord
-    })`,
+    `CALL pagination_groupmed(${Number.parseInt(data.sort_col)}, '${
+      data.sort_type
+    }', ${data.search_value ? "'" + data.search_value + "'" : null}, ${
+      data.isDeleted
+    }, ${data.numRecord}, ${data.startRecord}, @${data.totalRecord})`,
     (err, res) => {
       if (err) {
         callback(err);
