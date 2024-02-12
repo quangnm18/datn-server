@@ -189,6 +189,17 @@ class CategoryController {
     } catch (error) {}
   }
 
+  softDelMultiUnitMed(req, res) {
+    authPage(req, res);
+    try {
+      if (req.role === "ADMA" || req.role === "ADM" || req.role === "STFW") {
+        Medicine.softDelMultiUnitMed(req.body, (data) => {
+          res.json(data);
+        });
+      } else res.json("fail");
+    } catch (error) {}
+  }
+
   resUnitMed(req, res) {
     authPage(req, res);
     try {
@@ -257,7 +268,18 @@ class CategoryController {
     authPage(req, res);
     try {
       if (req.role === "ADMA" || req.role === "ADM" || req.role === "STFW") {
-        Medicine.softDeleteGrMed(req.params.id, (data) => {
+        Medicine.softDeleteGrMed(req.body, (data) => {
+          res.json(data);
+        });
+      } else res.json("fail");
+    } catch (error) {}
+  }
+
+  softDelMultiGrMed(req, res) {
+    authPage(req, res);
+    try {
+      if (req.role === "ADMA" || req.role === "ADM" || req.role === "STFW") {
+        Medicine.softDelMultiGrMed(req.body, (data) => {
           res.json(data);
         });
       } else res.json("fail");
@@ -324,7 +346,18 @@ class CategoryController {
     authPage(req, res);
     try {
       if (req.role === "ADMA" || req.role === "ADM" || req.role === "STFW") {
-        Supplier.softDeleteSingle(req.params.id, (data) => {
+        Supplier.softDeleteSingle(req.body, (data) => {
+          res.json(data);
+        });
+      } else res.json("fail");
+    } catch (error) {}
+  }
+
+  softDelMultiSup(req, res) {
+    authPage(req, res);
+    try {
+      if (req.role === "ADMA" || req.role === "ADM" || req.role === "STFW") {
+        Supplier.softDelMultiSup(req.body, (data) => {
           res.json(data);
         });
       } else res.json("fail");

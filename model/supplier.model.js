@@ -71,26 +71,58 @@ Supplier.update = function (id, data, callback) {
   );
 };
 
-Supplier.softDeleteSingle = function (id, callback) {
+Supplier.softDeleteSingle = function (data, callback) {
   var currentDate = new Date();
   var datetime =
     currentDate.getFullYear() +
     "-" +
     (currentDate.getMonth() + 1) +
     "-" +
-    currentDate.getDate();
+    currentDate.getDate() +
+    " " +
+    currentDate.getHours() +
+    ":" +
+    currentDate.getMinutes() +
+    ":" +
+    currentDate.getSeconds();
 
   db.query(
-    "UPDATE supplier SET isDeleted=?, deletedAt=? WHERE ID=?",
-    [1, datetime, id],
+    "UPDATE supplier SET isDeleted=?, deletedAt=?, deleted_by=? WHERE ID=?",
+    [1, datetime, data.user_id, data.id],
     (err, response) => {
       if (err) {
         callback(err);
       } else {
-        callback("OK");
+        callback(response);
       }
     }
   );
+};
+
+Supplier.softDelMultiSup = function (data, callback) {
+  var currentDate = new Date();
+  var datetime =
+    currentDate.getFullYear() +
+    "-" +
+    (currentDate.getMonth() + 1) +
+    "-" +
+    currentDate.getDate() +
+    " " +
+    currentDate.getHours() +
+    ":" +
+    currentDate.getMinutes() +
+    ":" +
+    currentDate.getSeconds();
+
+  let dbq = "";
+  data.listSelected.forEach((item) => {
+    dbq += `UPDATE supplier SET isDeleted=1, deletedAt='${datetime}', deleted_by=${data.user_id} WHERE id=${item.ID};`;
+  });
+  db.query(dbq, (err, response) => {
+    if (err) {
+      callback(err);
+    } else callback(response);
+  });
 };
 
 Supplier.hardDelete = function (id, callback) {

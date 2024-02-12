@@ -18,9 +18,10 @@ router.delete(
 router.put("/medicine/group/update/:id", categoryController.updateGroupMed);
 
 router.put("/medicine/group/restore/:id", categoryController.resGroupMed);
+router.put("/medicine/group/softdelete", categoryController.softDeleteGrMed);
 router.put(
-  "/medicine/group/softdelete/:id",
-  categoryController.softDeleteGrMed
+  "/medicine/group/multisoftdelete",
+  categoryController.softDelMultiGrMed
 );
 
 // / category/medicine/
@@ -55,7 +56,9 @@ router.get("/supplier/*", categoryController.getAllSup);
 router.post("/supplier/add", categoryController.createSupplier);
 
 router.put("/supplier/update/:id", categoryController.updateSupplier);
-router.put("/supplier/softdelete/:id", categoryController.softDelSupplier);
+router.put("/supplier/softdelete", categoryController.softDelSupplier);
+router.put("/supplier/multisoftdelete", categoryController.softDelMultiSup);
+
 router.put("/supplier/restore/:id", categoryController.restoreSupplier);
 
 router.delete("/supplier/harddelete/:id", categoryController.hardDelSupplier);
@@ -75,6 +78,11 @@ router.post("/medicine/unit/add", categoryController.addUnitMed);
 router.put("/medicine/unit/update/:id", categoryController.updateUnitMed);
 router.put("/medicine/unit/restore/:id", categoryController.resUnitMed);
 router.put("/medicine/unit/softdelete", categoryController.softDeleteUnitMed);
+router.put(
+  "/medicine/unit/multisoftdelete",
+  categoryController.softDelMultiUnitMed
+);
+
 router.delete(
   "/medicine/unit/harddelete/:id",
   categoryController.hardDelUnitMed

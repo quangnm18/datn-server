@@ -338,6 +338,32 @@ Medicine.softDeleteUnitMed = function (data, callback) {
   );
 };
 
+Medicine.softDelMultiUnitMed = function (data, callback) {
+  var currentDate = new Date();
+  var datetime =
+    currentDate.getFullYear() +
+    "-" +
+    (currentDate.getMonth() + 1) +
+    "-" +
+    currentDate.getDate() +
+    " " +
+    currentDate.getHours() +
+    ":" +
+    currentDate.getMinutes() +
+    ":" +
+    currentDate.getSeconds();
+
+  let dbq = "";
+  data.listSelected.forEach((item) => {
+    dbq += `UPDATE unit_med SET isDeleted=1, deletedAt='${datetime}', userId_del=${data.user_id} WHERE id=${item.id};`;
+  });
+  db.query(dbq, (err, response) => {
+    if (err) {
+      callback(err);
+    } else callback(response);
+  });
+};
+
 Medicine.resUnitMed = function (id, callback) {
   db.query(
     "UPDATE unit_med SET isDeleted=0 WHERE id=?",
@@ -398,16 +424,56 @@ Medicine.updateGroupMed = function (id, data, callback) {
   );
 };
 
-Medicine.softDeleteGrMed = function (id, callback) {
+Medicine.softDeleteGrMed = function (data, callback) {
+  var currentDate = new Date();
+  var datetime =
+    currentDate.getFullYear() +
+    "-" +
+    (currentDate.getMonth() + 1) +
+    "-" +
+    currentDate.getDate() +
+    " " +
+    currentDate.getHours() +
+    ":" +
+    currentDate.getMinutes() +
+    ":" +
+    currentDate.getSeconds();
+
   db.query(
-    "UPDATE group_medicine SET isDeleted=1 WHERE id=?",
-    id,
+    "UPDATE group_medicine SET isDeleted=1, deletedAt=?, userId_del=? WHERE id=?",
+    [datetime, data.user_id, data.id],
     (err, response) => {
       if (err) {
         callback(err);
       } else callback(response);
     }
   );
+};
+
+Medicine.softDelMultiGrMed = function (data, callback) {
+  var currentDate = new Date();
+  var datetime =
+    currentDate.getFullYear() +
+    "-" +
+    (currentDate.getMonth() + 1) +
+    "-" +
+    currentDate.getDate() +
+    " " +
+    currentDate.getHours() +
+    ":" +
+    currentDate.getMinutes() +
+    ":" +
+    currentDate.getSeconds();
+
+  let dbq = "";
+  data.listSelected.forEach((item) => {
+    dbq += `UPDATE group_medicine SET isDeleted=1, deletedAt='${datetime}', userId_del=${data.user_id} WHERE id=${item.id};`;
+  });
+  db.query(dbq, (err, response) => {
+    if (err) {
+      callback(err);
+    } else callback(response);
+  });
 };
 
 Medicine.resGroupMed = function (id, callback) {
