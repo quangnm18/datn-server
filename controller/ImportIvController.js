@@ -96,7 +96,7 @@ class ImportIvController {
 
   softDeleteInvoice(req, res) {
     try {
-      ImportIv.softDeleteInvoice(req.params.id, (data) => {
+      ImportIv.softDeleteInvoice(req.body, (data) => {
         res.json(data);
       });
     } catch (error) {}
@@ -104,7 +104,7 @@ class ImportIvController {
 
   softDeleteIvDetail(req, res) {
     try {
-      ImportIv.softDeleteIvDetail(req.params.id, (data) => {
+      ImportIv.softDeleteIvDetail(req.body, (data) => {
         res.json(data);
       });
     } catch (error) {}

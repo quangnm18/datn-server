@@ -9,6 +9,14 @@ class WarehouseController {
       });
     } catch (error) {}
   }
+
+  getAllInventoryWh(req, res) {
+    try {
+      InventoryWh.getAllInventoryWh(req.query, (data) => {
+        res.json(data);
+      });
+    } catch (error) {}
+  }
 }
 
 module.exports = new WarehouseController();

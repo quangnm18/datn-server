@@ -3,6 +3,7 @@ const homeRouter = require("./home");
 const categoryRouter = require("./category");
 const warehouseRouter = require("./warehouse");
 const importListRouter = require("./import");
+const exportWhRouter = require("./export");
 const untilRouter = require("./until");
 const authenRouter = require("./authen");
 const branchRouter = require("./branch");
@@ -10,6 +11,7 @@ const branchRouter = require("./branch");
 function route(app) {
   app.use("/branch", branchRouter);
   app.use("/until", untilRouter);
+  app.use("/exportwh", exportWhRouter);
   app.use("/importlist", importListRouter);
   app.use("/warehouse", warehouseRouter);
   app.use("/category", categoryRouter);

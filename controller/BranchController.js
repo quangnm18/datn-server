@@ -12,13 +12,10 @@ class BranchController {
   }
 
   getAllBranch(req, res) {
-    authPage(req, res);
     try {
-      if (req.role === "ADMA") {
-        Branch.getAllBranch((data) => {
-          res.json(data);
-        });
-      } else res.json("fail");
+      Branch.getAllBranch((data) => {
+        res.json(data);
+      });
     } catch (error) {}
   }
 

@@ -38,7 +38,13 @@ ImportIv.createInvoice = function (
     "-" +
     (currentDate.getMonth() + 1) +
     "-" +
-    currentDate.getDate();
+    currentDate.getDate() +
+    " " +
+    currentDate.getHours() +
+    ":" +
+    currentDate.getMinutes() +
+    ":" +
+    currentDate.getSeconds();
 
   db.query(
     `INSERT INTO ipt_cp (user_id, createdDate, giatri_nhap, tong_ck, tong_vat, thanh_tien, supplier, status, isDeleted, invoice_code) VALUES (${userId}, "${datetime}", ${
@@ -64,7 +70,13 @@ ImportIv.createInvoiceDetail = function (
     "-" +
     (currentDate.getMonth() + 1) +
     "-" +
-    currentDate.getDate();
+    currentDate.getDate() +
+    " " +
+    currentDate.getHours() +
+    ":" +
+    currentDate.getMinutes() +
+    ":" +
+    currentDate.getSeconds();
 
   let dbq = "";
 
@@ -236,18 +248,24 @@ ImportIv.getAllDetailsImported = function (callback) {
   );
 };
 
-ImportIv.softDeleteInvoice = function (id, callback) {
+ImportIv.softDeleteInvoice = function (data, callback) {
   var currentDate = new Date();
   var datetime =
     currentDate.getFullYear() +
     "-" +
     (currentDate.getMonth() + 1) +
     "-" +
-    currentDate.getDate();
+    currentDate.getDate() +
+    " " +
+    currentDate.getHours() +
+    ":" +
+    currentDate.getMinutes() +
+    ":" +
+    currentDate.getSeconds();
 
   db.query(
-    "UPDATE ipt_cp SET isDeleted=1, deletedAt=? WHERE ID=?",
-    [datetime, id],
+    "UPDATE ipt_cp SET isDeleted=1, deletedAt=?, deleted_by=? WHERE ID=?",
+    [datetime, data.user_id, data.id],
     (err, response) => {
       if (err) {
         callback(err);
@@ -258,17 +276,23 @@ ImportIv.softDeleteInvoice = function (id, callback) {
   );
 };
 
-ImportIv.softDeleteIvDetail = function (id, callback) {
+ImportIv.softDeleteIvDetail = function (data, callback) {
   var currentDate = new Date();
   var datetime =
     currentDate.getFullYear() +
     "-" +
     (currentDate.getMonth() + 1) +
     "-" +
-    currentDate.getDate();
+    currentDate.getDate() +
+    " " +
+    currentDate.getHours() +
+    ":" +
+    currentDate.getMinutes() +
+    ":" +
+    currentDate.getSeconds();
   db.query(
-    "UPDATE ipt_detail SET isDeletedDt=1, deletedAt=? WHERE ID=?",
-    [datetime, id],
+    "UPDATE ipt_detail SET isDeletedDt=1, deletedAt=?, deleted_by=? WHERE ID=?",
+    [datetime, data.user_id, data.id],
     (err, response) => {
       if (err) {
         callback(err);
@@ -324,7 +348,13 @@ ImportIv.acceptInvoice = function (data, callback) {
     "-" +
     (currentDate.getMonth() + 1) +
     "-" +
-    currentDate.getDate();
+    currentDate.getDate() +
+    " " +
+    currentDate.getHours() +
+    ":" +
+    currentDate.getMinutes() +
+    ":" +
+    currentDate.getSeconds();
   db.query(
     `UPDATE ipt_cp SET status=1, updatedStatusDate='${datetime}' WHERE invoice_code='${data.ma_hoa_don}'; UPDATE ipt_detail SET isImported=1 WHERE ma_hoa_don='${data.ma_hoa_don}';`,
 
@@ -343,7 +373,13 @@ ImportIv.rejectInvoice = function (data, callback) {
     "-" +
     (currentDate.getMonth() + 1) +
     "-" +
-    currentDate.getDate();
+    currentDate.getDate() +
+    " " +
+    currentDate.getHours() +
+    ":" +
+    currentDate.getMinutes() +
+    ":" +
+    currentDate.getSeconds();
   db.query(
     `UPDATE ipt_cp SET status=0, updatedStatusDate='${datetime}' WHERE invoice_code='${data.ma_hoa_don}'`,
     (err, res) => {

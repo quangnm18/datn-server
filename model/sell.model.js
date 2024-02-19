@@ -1,4 +1,3 @@
-const { response } = require("express");
 const db = require("../common/connect");
 
 const Sell = (sell) => {
@@ -24,7 +23,13 @@ Sell.createInvoice = function (data, callback) {
     "-" +
     (currentDate.getMonth() + 1) +
     "-" +
-    currentDate.getDate();
+    currentDate.getDate() +
+    " " +
+    currentDate.getHours() +
+    ":" +
+    currentDate.getMinutes() +
+    ":" +
+    currentDate.getSeconds();
 
   db.query(
     `INSERT INTO sale_cp (ma_nhan_vien, createdDate, tong_tien_hang, ck, tong_ck, tong_phai_tra, khach_tra, tien_du, ma_hoa_don) VALUES (${
@@ -50,10 +55,16 @@ Sell.createSaleDetail = function (
     "-" +
     (currentDate.getMonth() + 1) +
     "-" +
-    currentDate.getDate();
+    currentDate.getDate() +
+    " " +
+    currentDate.getHours() +
+    ":" +
+    currentDate.getMinutes() +
+    ":" +
+    currentDate.getSeconds();
 
   db.query(
-    "INSERT INTO sale_detail (med_id, ten_duoc, loai_dong_goi, so_luong_ban, don_vi_ban, don_gia_ban, thanh_tien, ma_hoa_don, createdAt, isDeleted, so_lo_hang, branch_id) VALUES ?",
+    "INSERT INTO sale_detail (med_id, ten_duoc, loai_dong_goi, so_luong_ban, don_vi_ban, don_gia_ban, thanh_tien, ma_hoa_don, createdAt, isDeleted, so_lo_hang, branch_id, ipt_detail_id) VALUES ?",
     [
       dataInvoice.map((item) => [
         item.med_id,
@@ -68,6 +79,7 @@ Sell.createSaleDetail = function (
         0,
         item.so_lo_hang,
         branch_id,
+        item.ipt_detail_id,
       ]),
     ],
     (err, response) => {
@@ -124,7 +136,7 @@ Sell.getListIv = function (data, callback) {
 
 Sell.getSaleDetailByIvCode = function (data, callback) {
   db.query(
-    "SELECT * FROM sale_detail WHERE ma_hoa_don=? ",
+    "SELECT i.so_lo, s.* FROM sale_detail s LEFT JOIN ipt_detail i ON s.ipt_detail_id = i.id WHERE s.ma_hoa_don=? ",
     data.q,
     (err, res) => {
       if (err) {
@@ -199,17 +211,6 @@ Sell.softDelSaleIv = function (data, callback) {
     currentDate.getSeconds();
 
   let dbq = `UPDATE sale_cp SET isDeleted=1, deletedAt='${datetime}', deleted_by=${data.deleted_by} WHERE ma_hoa_don='${data.ma_hoa_don}'; UPDATE sale_detail SET isDeleted=1, deletedAt='${datetime}', deleted_by=${data.deleted_by} WHERE ma_hoa_don='${data.ma_hoa_don}';`;
-  // db.query(
-  //   "UPDATE sale_cp SET isDeleted=1, deletedAt=? WHERE id=?",
-  //   [datetime, id],
-  //   (err, response) => {
-  //     if (err) {
-  //       callback(err);
-  //     } else {
-  //       callback(response);
-  //     }
-  //   }
-  // );
 
   db.query(dbq, (err, response) => {
     if (err) {

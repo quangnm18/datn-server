@@ -43,6 +43,38 @@ InventoryWh.getInventoryWh = function (data, callback) {
           element["sl_tong"] = Number.parseInt(element["sl_tong"]);
           element["soluong_lon"] = Number.parseInt(element["soluong_lon"]);
           element["so_luong_ban"] = Number.parseInt(element["so_luong_ban"]);
+          element["so_luong_xuat"] = Number.parseInt(element["so_luong_xuat"]);
+        });
+        callback(response);
+      }
+    }
+  );
+};
+
+InventoryWh.getAllInventoryWh = function (data, callback) {
+  let branch_id = data.branch_id;
+  if (branch_id === null || branch_id === undefined || branch_id === "0") {
+    branch_id = null;
+  }
+
+  let group_id = data.group_id;
+  if (group_id === null || group_id === undefined || group_id === "0") {
+    group_id = null;
+  }
+
+  db.query(
+    `Call checkall_wh(${group_id}, ${branch_id}, ${
+      data.search_value ? "'" + data.search_value + "'" : null
+    })`,
+    (err, response) => {
+      if (err) {
+        callback(err);
+      } else {
+        response[0].forEach((element) => {
+          element["sl_tong"] = Number.parseInt(element["sl_tong"]);
+          element["soluong_lon"] = Number.parseInt(element["soluong_lon"]);
+          element["so_luong_ban"] = Number.parseInt(element["so_luong_ban"]);
+          element["so_luong_xuat"] = Number.parseInt(element["so_luong_xuat"]);
         });
         callback(response);
       }

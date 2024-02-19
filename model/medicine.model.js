@@ -110,11 +110,16 @@ Medicine.getAllMedCurr = function (data, callback) {
 
 Medicine.getSearchSell = function (data, callback) {
   db.query(
-    `CALL get_search_sell('${data.q}' ,${data.isDeleted})`,
+    `CALL get_search_sell(${data.branch_id}, '${data.q}')`,
     (err, response) => {
       if (err || response[0].length === 0) {
         callback(err);
       } else {
+        response[0].forEach((element) => {
+          element["sl_tong"] = Number.parseInt(element["sl_tong"]);
+          element["soluong_lon"] = Number.parseInt(element["soluong_lon"]);
+          element["so_luong_ban"] = Number.parseInt(element["so_luong_ban"]);
+        });
         callback(response);
       }
     }
@@ -146,13 +151,29 @@ Medicine.getById = function (id, callback) {
 };
 
 Medicine.create = function (data, callback) {
-  // dbq = `INSERT INTO medicine (sdk, han_sdk, ten, hoat_chat, ham_luong, sqd, nam_cap, dot_cap, dang_bao_che, dong_goi, tieu_chuan, han_dung, cty_dk, dchi_ctydk, cty_sx, dchi_ctysx, nhom_thuoc, don_vi_duoc, don_gia) VALUES ('${data.sdk}', '${data.han_sdk}', '${data.ten}', '${data.hoat_chat}', '${data.ham_luong}', '${data.sqd}', '${data.nam_cap}', '${data.dot_cap}', '${data.dang_bao_che}', '${data.dong_goi}', '${data.tieu_chuan}', '${data.han_dung}', '${data.cty_dk}', '${data.dchi_ctydk}', '${data.cty_sx}', '${data.dchi_ctysx}', ${data.nhom_thuoc}, ${data.don_vi_duoc}, ${data.don_gia}); INSERT INTO `
+  // let dbq = `INSERT INTO medicine SET (sdk, han_sdk, ten, hoat_chat, ham_luong, sqd, nam_cap, dot_cap, dang_bao_che, dong_goi, tieu_chuan, han_dung, cty_dk, dchi_ctydk, cty_sx, dchi_ctysx, nhom_thuoc, don_vi_duoc) VALUES ('${
+  //   data.sdk
+  // }', '${data.han_sdk ? data.han_sdk : "1970-01-01"}', '${data.ten}', '${
+  //   data.hoat_chat
+  // }', '${data.ham_luong}', '${data.sqd}', '${
+  //   data.nam_cap ? data.nam_cap : "1970-01-01"
+  // }', '${data.dot_cap}', '${data.dang_bao_che}', '${data.dong_goi}', '${
+  //   data.tieu_chuan
+  // }', '${data.han_dung}', '${data.cty_dk}', '${data.dchi_ctydk}', '${
+  //   data.cty_sx
+  // }', '${data.dchi_ctysx}', ${data.nhom_thuoc}, ${data.don_vi_duoc})`;
 
   db.query("INSERT INTO medicine SET ?", data, (err, response) => {
     if (err) {
       callback(err);
     } else callback({ id: response.insertId, ...data });
   });
+
+  // db.query(dbq, (err, response) => {
+  //   if (err) {
+  //     callback(err);
+  //   } else callback({ id: response.insertId, ...data });
+  // });
 };
 
 Medicine.delete = function (id, callback) {
@@ -198,19 +219,25 @@ Medicine.update = function (id, data, callback) {
   );
 };
 
-Medicine.softDelete = function ({ data }, callback) {
+Medicine.softDelete = function ({ data, user_id }, callback) {
   var currentDate = new Date();
   var datetime =
     currentDate.getFullYear() +
     "-" +
     (currentDate.getMonth() + 1) +
     "-" +
-    currentDate.getDate();
+    currentDate.getDate() +
+    " " +
+    currentDate.getHours() +
+    ":" +
+    currentDate.getMinutes() +
+    ":" +
+    currentDate.getSeconds();
 
   var sql = "";
 
   data.forEach((med) => {
-    sql += `UPDATE medicine SET isDeleted=1, deletedAt="${datetime}" WHERE ID=${med.id};`;
+    sql += `UPDATE medicine SET isDeleted=1, deletedAt="${datetime}", deleted_by=${user_id} WHERE ID=${med.id};`;
   });
 
   db.query(sql, (err, response) => {
@@ -222,29 +249,35 @@ Medicine.softDelete = function ({ data }, callback) {
   });
 };
 
-Medicine.sofDeleteMulti = function (data, callback) {
-  var currentDate = new Date();
-  var datetime =
-    currentDate.getFullYear() +
-    "-" +
-    (currentDate.getMonth() + 1) +
-    "-" +
-    currentDate.getDate();
+// Medicine.sofDeleteMulti = function (data, callback) {
+//   var currentDate = new Date();
+//   var datetime =
+//     currentDate.getFullYear() +
+//     "-" +
+//     (currentDate.getMonth() + 1) +
+//     "-" +
+//     currentDate.getDate() +
+//     " " +
+//     currentDate.getHours() +
+//     ":" +
+//     currentDate.getMinutes() +
+//     ":" +
+//     currentDate.getSeconds();
 
-  data.forEach((id) => {
-    db.query(
-      "UPDATE medicine SET isDeleted=?, deletedAt=? WHERE ID=?",
-      [1, datetime, id],
-      (err, response) => {
-        if (err) {
-          callback(err);
-        } else {
-          callback("OK");
-        }
-      }
-    );
-  });
-};
+//   data.forEach((id) => {
+//     db.query(
+//       "UPDATE medicine SET isDeleted=?, deletedAt=? WHERE ID=?",
+//       [1, datetime, id],
+//       (err, response) => {
+//         if (err) {
+//           callback(err);
+//         } else {
+//           callback("OK");
+//         }
+//       }
+//     );
+//   });
+// };
 
 Medicine.restoreMed = function (id, callback) {
   db.query(

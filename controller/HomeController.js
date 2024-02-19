@@ -20,7 +20,7 @@ class HomeController {
 
   getMedDue(req, res) {
     try {
-      Home.getMedDue((data) => {
+      Home.getMedDue(req.query, (data) => {
         res.json(data);
       });
     } catch (error) {}

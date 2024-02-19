@@ -18,15 +18,15 @@ router.get("/alldetail/*", ImportIvController.getDetailsByCode);
 router.get("/alldetailid/:id", ImportIvController.getDetailsByMedId);
 router.get("/alldetail", ImportIvController.getAllDetail);
 
-router.put("/softdelete/:id", ImportIvController.softDeleteInvoice);
+router.put("/softdelete", ImportIvController.softDeleteInvoice);
 router.put("/restorecp/:id", ImportIvController.restoreImportCp);
 router.delete("/harddelete/:id", ImportIvController.hardDeleteImportCp); //nguy hiem
 
 router.put("/detail/update", ImportIvController.updateIvDetail);
 
 //detail //ca 2 role
-router.get("/detail/*", ImportIvController.getPaginateDetail);
-router.put("/detail/softdelete/:id", ImportIvController.softDeleteIvDetail);
+router.put("/detail/softdelete", ImportIvController.softDeleteIvDetail);
+router.get("/detail*", ImportIvController.getPaginateDetail);
 //
 //detail //admin
 router.put("/detail/restore/:id", ImportIvController.restoreIvDetail);

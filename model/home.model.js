@@ -29,15 +29,26 @@ Home.getCountSup = function (callback) {
   );
 };
 
-Home.getMedDue = function (callback) {
+Home.getMedDue = function (data, callback) {
   var currentDate = new Date();
-  var curr_day =
-    currentDate.getFullYear() * 12 * 30 +
-    (currentDate.getMonth() + 1) * 30 +
-    currentDate.getDate();
+  var date_start = `${data.curr_year}-01-01`;
+  var date_to = `${data.curr_year}-12-31`;
+
+  var datetime =
+    currentDate.getFullYear() +
+    "-" +
+    (currentDate.getMonth() + 1) +
+    "-" +
+    currentDate.getDate() +
+    " " +
+    currentDate.getHours() +
+    ":" +
+    currentDate.getMinutes() +
+    ":" +
+    currentDate.getSeconds();
 
   db.query(
-    "SELECT ipt_detail.han_dung FROM ipt_detail WHERE ipt_detail.isImported=1 AND ipt_detail.isDeletedDt=0",
+    `CALL home_page('${date_start}', '${date_to}', ${data.branch_id}, '${datetime}', @${data.count_due}, @${data.count_neardue}, @${data.count_ok}, @${data.tonggt_nhap}, @${data.tong_ban})`,
     (err, res) => {
       if (err) {
         callback(err);
