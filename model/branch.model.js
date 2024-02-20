@@ -16,7 +16,7 @@ Branch.getMaxIdBranch = function (callback) {
 };
 
 Branch.getAllBranch = function (callback) {
-  db.query("SELECT * FROM branchs", (err, res) => {
+  db.query("SELECT * FROM branchs WHERE isDeleted = 0", (err, res) => {
     if (err) {
       callback(err);
     } else callback(res);
@@ -41,11 +41,14 @@ Branch.getPaginateBranchs = function (data, callback) {
 };
 
 Branch.createBranch = function (data, callback) {
-  db.query("INSERT INTO branchs SET ?", data, (err, response) => {
-    if (err) {
-      callback(err);
-    } else callback({ id: response.insertId, ...data });
-  });
+  db.query(
+    `INSERT INTO branchs (id, name, address, branch_code) VALUES (${data.newId}, '${data.name}', '${data.address}', '${data.branch_code}')`,
+    (err, response) => {
+      if (err) {
+        callback(err);
+      } else callback(response);
+    }
+  );
 };
 
 Branch.updateBranch = function (data, id, callback) {
@@ -60,6 +63,16 @@ Branch.updateBranch = function (data, id, callback) {
       }
     }
   );
+};
+
+Branch.softDelBranch = function (id, callback) {
+  db.query("UPDATE branchs SET isDeleted=1 WHERE id=?", id, (err, response) => {
+    if (err) {
+      callback(err);
+    } else {
+      callback(response);
+    }
+  });
 };
 
 Branch.deleteBranch = function (id, callback) {

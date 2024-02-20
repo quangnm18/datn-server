@@ -38,6 +38,17 @@ class BranchController {
     } catch (error) {}
   }
 
+  softDelBranch(req, res) {
+    authPage(req, res);
+    try {
+      if (req.role === "ADMA") {
+        Branch.softDelBranch(req.params.id, (data) => {
+          res.json(data);
+        });
+      } else res.json("fail");
+    } catch (error) {}
+  }
+
   updateBranch(req, res) {
     authPage(req, res);
     try {

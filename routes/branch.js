@@ -6,6 +6,8 @@ const BranchController = require("../controller/BranchController");
 
 router.post("/create", BranchController.createBranch);
 router.put("/update/:id", BranchController.updateBranch);
+router.put("/softdelete/:id", BranchController.softDelBranch);
+
 router.delete("/delete/:id", BranchController.deleteBranch);
 
 router.get("/paginate", BranchController.getPaginateBranch);

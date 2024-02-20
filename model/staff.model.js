@@ -41,15 +41,15 @@ Staffs.addUser = function (data, callback) {
   );
 };
 
-Staffs.deleteUser = function (id, callback) {
-  db.query("DELETE FROM users WHERE ID = ?", id, (err, response) => {
-    if (err) {
-      callback(err);
-    } else {
-      callback(response);
-    }
-  });
-};
+// Staffs.deleteUser = function (id, callback) {
+//   db.query("DELETE FROM users WHERE ID = ?", id, (err, response) => {
+//     if (err) {
+//       callback(err);
+//     } else {
+//       callback(response);
+//     }
+//   });
+// };
 
 Staffs.softDeleteUser = function (id, callback) {
   db.query("UPDATE users SET isDeleted=1 WHERE ID = ?", id, (err, response) => {

@@ -35,6 +35,4 @@ router.delete("/detail/harddelete/:id", ImportIvController.hardDelIvDetail); //n
 router.put("/acceptiv", ImportIvController.acceptInvoice);
 router.put("/rejectiv", ImportIvController.rejectInvoice);
 
-router.put("/importdetail", ImportIvController.importedIvDetail); // chap thuan nhap chi tiet don nhap vao kho
-
 module.exports = router;

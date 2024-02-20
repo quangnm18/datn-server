@@ -18,17 +18,6 @@ Home.getAllCountRp = function (callback) {
   );
 };
 
-Home.getCountSup = function (callback) {
-  db.query(
-    "SELECT COUNT(ID) as count_sup FROM supplier WHERE isDeleted=0",
-    (err, res) => {
-      if (err) {
-        callback(err);
-      } else callback(res);
-    }
-  );
-};
-
 Home.getMedDue = function (data, callback) {
   var currentDate = new Date();
   var date_start = `${data.curr_year}-01-01`;

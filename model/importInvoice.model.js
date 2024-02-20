@@ -390,20 +390,6 @@ ImportIv.rejectInvoice = function (data, callback) {
   );
 };
 
-ImportIv.importedIvDetail = function (data, callback) {
-  db.query(
-    "UPDATE ipt_detail SET isImported=1 WHERE ma_hoa_don=?",
-    data.ma_hoa_don,
-    (err, res) => {
-      if (err) {
-        callback(err);
-      } else {
-        callback(res);
-      }
-    }
-  );
-};
-
 ////////////
 
 ImportIv.restoreImportCp = function (id, callback) {

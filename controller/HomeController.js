@@ -10,14 +10,6 @@ class HomeController {
     } catch (error) {}
   }
 
-  getCountSup(req, res) {
-    try {
-      Home.getCountSup((data) => {
-        res.json(data);
-      });
-    } catch (error) {}
-  }
-
   getMedDue(req, res) {
     try {
       Home.getMedDue(req.query, (data) => {

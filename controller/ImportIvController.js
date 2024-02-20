@@ -95,82 +95,101 @@ class ImportIvController {
   }
 
   softDeleteInvoice(req, res) {
+    authPage(req, res);
     try {
-      ImportIv.softDeleteInvoice(req.body, (data) => {
-        res.json(data);
-      });
+      if (req.role === "ADM" || req.role === "STFW") {
+        ImportIv.softDeleteInvoice(req.body, (data) => {
+          res.json(data);
+        });
+      } else res.json("fail");
     } catch (error) {}
   }
 
   softDeleteIvDetail(req, res) {
+    authPage(req, res);
     try {
-      ImportIv.softDeleteIvDetail(req.body, (data) => {
-        res.json(data);
-      });
+      if (req.role === "ADM" || req.role === "STFW") {
+        ImportIv.softDeleteIvDetail(req.body, (data) => {
+          res.json(data);
+        });
+      } else res.json("fail");
     } catch (error) {}
   }
 
   acceptInvoice(req, res) {
+    authPage(req, res);
     try {
-      ImportIv.acceptInvoice(req.body, (data) => {
-        res.json(data);
-      });
+      if (req.role === "ADM") {
+        ImportIv.acceptInvoice(req.body, (data) => {
+          res.json(data);
+        });
+      } else res.json("fail");
     } catch (error) {}
   }
 
   rejectInvoice(req, res) {
+    authPage(req, res);
     try {
-      ImportIv.rejectInvoice(req.body, (data) => {
-        res.json(data);
-      });
-    } catch (error) {}
-  }
-
-  importedIvDetail(req, res) {
-    try {
-      ImportIv.importedIvDetail(req.body, (data) => {
-        res.json(data);
-      });
+      if (req.role === "ADM") {
+        ImportIv.rejectInvoice(req.body, (data) => {
+          res.json(data);
+        });
+      } else res.json("fail");
     } catch (error) {}
   }
 
   restoreImportCp(req, res) {
+    authPage(req, res);
     try {
-      ImportIv.restoreImportCp(req.params.id, (data) => {
-        res.json(data);
-      });
+      if (req.role === "ADMA" || req.role === "ADM") {
+        ImportIv.restoreImportCp(req.params.id, (data) => {
+          res.json(data);
+        });
+      } else res.json("fail");
     } catch (error) {}
   }
 
   hardDeleteImportCp(req, res) {
+    authPage(req, res);
     try {
-      ImportIv.hardDeleteImportCp(req.params.id, (data) => {
-        res.json(data);
-      });
+      if (req.role === "ADMA") {
+        ImportIv.hardDeleteImportCp(req.params.id, (data) => {
+          res.json(data);
+        });
+      } else res.json("fail");
     } catch (error) {}
   }
 
   restoreIvDetail(req, res) {
+    authPage(req, res);
     try {
-      ImportIv.restoreIvDetail(req.params.id, (data) => {
-        res.json(data);
-      });
+      if (req.role === "ADMA" || req.role === "ADM") {
+        ImportIv.restoreIvDetail(req.params.id, (data) => {
+          res.json(data);
+        });
+      } else res.json("fail");
     } catch (error) {}
   }
 
   hardDelIvDetail(req, res) {
+    authPage(req, res);
     try {
-      ImportIv.hardDelIvDetail(req.params.id, (data) => {
-        res.json(data);
-      });
+      if (req.role === "ADMA") {
+        ImportIv.hardDelIvDetail(req.params.id, (data) => {
+          res.json(data);
+        });
+      } else res.json("fail");
     } catch (error) {}
   }
 
   updateIvDetail(req, res) {
+    authPage(req, res);
     try {
-      ImportIv.updateIvDetail(req.body, (data) => {
-        res.json(data);
-      });
+      if (req.role === "ADM" || req.role === "STFW") {
+        ImportIv.updateIvDetail(req.body, (data) => {
+          res.json(data);
+        });
+      } else res.json("fail");
     } catch (error) {}
   }
 }

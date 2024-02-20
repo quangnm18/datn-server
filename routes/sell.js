@@ -12,7 +12,7 @@ router.post("/ivcreate", sellController.createInvoice);
 router.get("/ivlist/*", sellController.getListIv); //co phan trang (ca deleted va khong deleted)
 router.get("/allivlist", sellController.getAllListIv); //get tat ca
 router.get("/ivdetailcurr/*", sellController.getSaleDetailByIvCode);
-router.get("/ivdetailcurr", sellController.getAllSaleDetailCurr);
+// router.get("/ivdetailcurr", sellController.getAllSaleDetailCurr);
 router.get("/ivdetail*", sellController.getSaleDetail); //co pagination
 
 router.get("/allivdetail/synthetic", sellController.getSyntheticSaleDetail); //khong dung

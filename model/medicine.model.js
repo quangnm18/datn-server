@@ -420,7 +420,7 @@ Medicine.hardDelUnit = function (id, callback) {
 //group Medicine
 Medicine.getGroupMed = function (callback) {
   db.query(
-    "SELECT * FROM group_medicine ORDER BY ten_nhom_thuoc",
+    "SELECT * FROM group_medicine WHERE isDeleted = 0 ORDER BY ten_nhom_thuoc",
     (err, response) => {
       if (err) {
         callback(err);

@@ -84,7 +84,7 @@ class ExportWhController {
   resInvoice(req, res) {
     authPage(req, res);
     try {
-      if (req.role === "ADM") {
+      if (req.role === "ADMA" || req.role === "ADM") {
         ExportWh.restoreExportIv(req.body, (data) => {
           res.json(data);
         });

@@ -52,14 +52,6 @@ class CategoryController {
     } catch (error) {}
   }
 
-  // getCheckWh(req, res) {
-  //   try {
-  //     Medicine.getCheckWh(req.query, (data) => {
-  //       res.json(data);
-  //     });
-  //   } catch (error) {}
-  // }
-
   getSearchSell(req, res) {
     try {
       Medicine.getSearchSell(req.query, (data) => {
@@ -69,10 +61,13 @@ class CategoryController {
   }
 
   getSearchImport(req, res) {
+    authPage(req, res);
     try {
-      Medicine.getSearchImport(req.query, (data) => {
-        res.json(data);
-      });
+      if (req.role === "ADM" || req.role === "STFW") {
+        Medicine.getSearchImport(req.query, (data) => {
+          res.json(data);
+        });
+      } else res.json("fail");
     } catch (error) {}
   }
 
@@ -89,7 +84,7 @@ class CategoryController {
     //xoa cung
     authPage(req, res);
     try {
-      if (req.role === "ADMA" || req.role === "ADM") {
+      if (req.role === "ADMA") {
         Medicine.delete(req.params.id, (response) => {
           res.json(response);
         });
@@ -214,7 +209,7 @@ class CategoryController {
   hardDelUnitMed(req, res) {
     authPage(req, res);
     try {
-      if (req.role === "ADMA" || req.role === "ADM") {
+      if (req.role === "ADMA") {
         Medicine.hardDelUnit(req.params.id, (data) => {
           res.json(data);
         });
@@ -234,7 +229,7 @@ class CategoryController {
   hardDeleteGr(req, res) {
     authPage(req, res);
     try {
-      if (req.role === "ADMA" || req.role === "ADM") {
+      if (req.role === "ADMA") {
         Medicine.hardDeleteGr(req.params.id, (data) => {
           res.json(data);
         });
@@ -367,7 +362,7 @@ class CategoryController {
   hardDelSupplier(req, res) {
     authPage(req, res);
     try {
-      if (req.role === "ADMA" || req.role === "ADM") {
+      if (req.role === "ADMA") {
         Supplier.hardDelete(req.params.id, (response) => {
           res.json(response);
         });
@@ -409,7 +404,7 @@ class CategoryController {
   updateUser(req, res) {
     authPage(req, res);
     try {
-      if (req.role === "ADM") {
+      if (req.role === "ADM" || req.role === "ADMA") {
         Staff.updateUser(req.body, (data) => {
           res.json(data);
         });
@@ -417,16 +412,16 @@ class CategoryController {
     } catch (error) {}
   }
 
-  deleteUserById(req, res) {
-    authPage(req, res);
-    try {
-      if (req.role === "ADMA") {
-        Staff.deleteUser(req.params.id, (data) => {
-          res.json(data);
-        });
-      } else res.json("fail");
-    } catch (error) {}
-  }
+  // deleteUserById(req, res) {
+  //   authPage(req, res);
+  //   try {
+  //     if (req.role === "ADMA") {
+  //       Staff.deleteUser(req.params.id, (data) => {
+  //         res.json(data);
+  //       });
+  //     } else res.json("fail");
+  //   } catch (error) {}
+  // }
 
   softDeleteUserById(req, res) {
     authPage(req, res);
