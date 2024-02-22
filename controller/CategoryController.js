@@ -60,14 +60,22 @@ class CategoryController {
     } catch (error) {}
   }
 
+  // getSearchImport(req, res) {
+  //   authPage(req, res);
+  //   try {
+  //     if (req.role === "ADM" || req.role === "STFW") {
+  //       Medicine.getSearchImport(req.query, (data) => {
+  //         res.json(data);
+  //       });
+  //     } else res.json("fail");
+  //   } catch (error) {}
+  // }
+
   getSearchImport(req, res) {
-    authPage(req, res);
     try {
-      if (req.role === "ADM" || req.role === "STFW") {
-        Medicine.getSearchImport(req.query, (data) => {
-          res.json(data);
-        });
-      } else res.json("fail");
+      Medicine.getSearchImport(req.query, (data) => {
+        res.json(data);
+      });
     } catch (error) {}
   }
 

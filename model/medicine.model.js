@@ -69,45 +69,6 @@ Medicine.getAllMedCurr = function (data, callback) {
   );
 };
 
-// Medicine.get_all = function (result) {
-//   db.query(
-//     "SELECT medicine.id, medicine.sdk, medicine.han_sdk, medicine.ten, medicine.hoat_chat, medicine.ham_luong, medicine.sqd, medicine.nam_cap, medicine.dot_cap, medicine.dang_bao_che, medicine.dong_goi, medicine.tieu_chuan, medicine.han_dung, medicine.cty_dk, medicine.dchi_ctydk, medicine.cty_sx, medicine.dchi_ctysx, medicine.nhom_thuoc, medicine.don_vi_duoc, medicine.don_gia, medicine.isDeleted, medicine.deletedAt, group_medicine.group_code, group_medicine.ten_nhom_thuoc, unit_med.description_unit, unit_med.unit_code FROM medicine LEFT JOIN group_medicine ON medicine.nhom_thuoc = group_medicine.id LEFT JOIN unit_med ON medicine.don_vi_duoc = unit_med.id ORDER BY id DESC",
-//     (err, data) => {
-//       if (err) {
-//         result(err);
-//       } else result(data);
-//     }
-//   );
-// };
-
-// Medicine.get_allCurrent = function (result) {
-//   db.query(
-//     "SELECT medicine.id, medicine.sdk, medicine.han_sdk, medicine.ten, medicine.hoat_chat, medicine.ham_luong, medicine.sqd, medicine.nam_cap, medicine.dot_cap, medicine.dang_bao_che, medicine.dong_goi, medicine.tieu_chuan, medicine.han_dung, medicine.cty_dk, medicine.dchi_ctydk, medicine.cty_sx, medicine.dchi_ctysx, medicine.nhom_thuoc, medicine.don_vi_duoc, medicine.don_gia, medicine.isDeleted, medicine.deletedAt, group_medicine.group_code, group_medicine.ten_nhom_thuoc, unit_med.description_unit, unit_med.unit_code FROM medicine LEFT JOIN group_medicine ON medicine.nhom_thuoc = group_medicine.id LEFT JOIN unit_med ON medicine.don_vi_duoc = unit_med.id WHERE medicine.isDeleted=0 ORDER BY medicine.id DESC",
-//     (err, data) => {
-//       if (err) {
-//         result(err);
-//       } else result(data);
-//     }
-//   );
-// };
-
-// Medicine.getCheckWh = function (data, callback) {
-//   db.query(
-//     `CALL get_synthetic_importdetail(${data.isDeleted})`,
-//     (err, response) => {
-//       if (err) {
-//         callback(err);
-//       } else {
-//         response[0].forEach((element) => {
-//           element["sl_tong"] = Number.parseInt(element["sl_tong"]);
-//           element["soluong_lon"] = Number.parseInt(element["soluong_lon"]);
-//         });
-//         callback(response);
-//       }
-//     }
-//   );
-// };
-
 Medicine.getSearchSell = function (data, callback) {
   db.query(
     `CALL get_search_sell(${data.branch_id}, '${data.q}')`,
@@ -118,7 +79,17 @@ Medicine.getSearchSell = function (data, callback) {
         response[0].forEach((element) => {
           element["sl_tong"] = Number.parseInt(element["sl_tong"]);
           element["soluong_lon"] = Number.parseInt(element["soluong_lon"]);
-          element["so_luong_ban"] = Number.parseInt(element["so_luong_ban"]);
+          element["so_luong_ban"] = element["so_luong_ban"]
+            ? Number.parseInt(element["so_luong_ban"])
+            : 0;
+          element["so_luong_xuat"] = Number.parseInt(element["so_luong_xuat"])
+            ? Number.parseInt(element["so_luong_xuat"])
+            : 0;
+          element["soluonglon_xuat"] = Number.parseInt(
+            element["soluonglon_xuat"]
+          )
+            ? Number.parseInt(element["soluonglon_xuat"])
+            : 0;
         });
         callback(response);
       }
@@ -151,29 +122,11 @@ Medicine.getById = function (id, callback) {
 };
 
 Medicine.create = function (data, callback) {
-  // let dbq = `INSERT INTO medicine SET (sdk, han_sdk, ten, hoat_chat, ham_luong, sqd, nam_cap, dot_cap, dang_bao_che, dong_goi, tieu_chuan, han_dung, cty_dk, dchi_ctydk, cty_sx, dchi_ctysx, nhom_thuoc, don_vi_duoc) VALUES ('${
-  //   data.sdk
-  // }', '${data.han_sdk ? data.han_sdk : "1970-01-01"}', '${data.ten}', '${
-  //   data.hoat_chat
-  // }', '${data.ham_luong}', '${data.sqd}', '${
-  //   data.nam_cap ? data.nam_cap : "1970-01-01"
-  // }', '${data.dot_cap}', '${data.dang_bao_che}', '${data.dong_goi}', '${
-  //   data.tieu_chuan
-  // }', '${data.han_dung}', '${data.cty_dk}', '${data.dchi_ctydk}', '${
-  //   data.cty_sx
-  // }', '${data.dchi_ctysx}', ${data.nhom_thuoc}, ${data.don_vi_duoc})`;
-
   db.query("INSERT INTO medicine SET ?", data, (err, response) => {
     if (err) {
       callback(err);
     } else callback({ id: response.insertId, ...data });
   });
-
-  // db.query(dbq, (err, response) => {
-  //   if (err) {
-  //     callback(err);
-  //   } else callback({ id: response.insertId, ...data });
-  // });
 };
 
 Medicine.delete = function (id, callback) {
@@ -248,36 +201,6 @@ Medicine.softDelete = function ({ data, user_id }, callback) {
     }
   });
 };
-
-// Medicine.sofDeleteMulti = function (data, callback) {
-//   var currentDate = new Date();
-//   var datetime =
-//     currentDate.getFullYear() +
-//     "-" +
-//     (currentDate.getMonth() + 1) +
-//     "-" +
-//     currentDate.getDate() +
-//     " " +
-//     currentDate.getHours() +
-//     ":" +
-//     currentDate.getMinutes() +
-//     ":" +
-//     currentDate.getSeconds();
-
-//   data.forEach((id) => {
-//     db.query(
-//       "UPDATE medicine SET isDeleted=?, deletedAt=? WHERE ID=?",
-//       [1, datetime, id],
-//       (err, response) => {
-//         if (err) {
-//           callback(err);
-//         } else {
-//           callback("OK");
-//         }
-//       }
-//     );
-//   });
-// };
 
 Medicine.restoreMed = function (id, callback) {
   db.query(

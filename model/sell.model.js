@@ -146,19 +146,6 @@ Sell.getSaleDetailByIvCode = function (data, callback) {
   );
 };
 
-// Sell.getAllSaleDetailCurr = function (callback) {
-//   db.query(
-//     "SELECT sale_detail.id, sale_detail.med_id, sale_detail.ten_duoc, sale_detail.so_luong_ban, sale_detail.don_vi_ban, sale_detail.don_gia_ban, sale_detail.thanh_tien, sale_detail.ma_hoa_don, sale_detail.createdAt, sale_detail.isDeleted, medicine.hoat_chat, medicine.ham_luong, medicine.dang_bao_che, medicine.dong_goi FROM sale_detail LEFT JOIN medicine ON sale_detail.med_id = medicine.id WHERE sale_detail.isDeleted=0",
-//     (err, response) => {
-//       if (err) {
-//         callback(err);
-//       } else {
-//         callback(response);
-//       }
-//     }
-//   );
-// };
-
 Sell.getSaleDetail = function (data, callback) {
   let date_start = data.date_start;
   let date_to = data.date_to;
@@ -233,19 +220,6 @@ Sell.hardDelSaleIv = function (id, callback) {
     if (err) {
       callback(err);
     } else callback(res);
-  });
-};
-
-Sell.getSyntheticSaleDetail = function (callback) {
-  db.query("CALL get_synthetic_saledetail()", (err, res) => {
-    if (err) {
-      callback(err);
-    } else {
-      res[0].forEach((element) => {
-        element["so_luong_ban"] = Number.parseInt(element["so_luong_ban"]);
-      });
-      callback(res);
-    }
   });
 };
 

@@ -49,14 +49,6 @@ class SellController {
     } catch (error) {}
   }
 
-  // getAllSaleDetailCurr(req, res) {
-  //   try {
-  //     Sell.getAllSaleDetailCurr((data) => {
-  //       res.json(data);
-  //     });
-  //   } catch (error) {}
-  // }
-
   getSaleDetail(req, res) {
     try {
       Sell.getSaleDetail(req.query, (data) => {
@@ -105,40 +97,6 @@ class SellController {
       } else res.json("fail");
     } catch (error) {}
   }
-
-  getSyntheticSaleDetail(req, res) {
-    try {
-      Sell.getSyntheticSaleDetail((data) => {
-        res.json(data);
-      });
-    } catch (error) {}
-  }
-
-  // /sell/listall
-
-  // getAllInvoiceSale(req, res) {
-  //   try {
-  //     Sell.get_all((data) => {
-  //       res.json(data);
-  //     });
-  //   } catch (error) {}
-  // }
-
-  // getByDate(req, res) {
-  //   try {
-  //     Sell.getByDate(dataReq, (response) => {
-  //       res.json(response);
-  //     });
-  //   } catch (error) {}
-  // }
-
-  // deleteInvoice(req, res) {
-  //   try {
-  //     Sell.delete(req.params.id, (response) => {
-  //       res.json(response);
-  //     });
-  //   } catch (error) {}
-  // }
 }
 
 module.exports = new SellController();

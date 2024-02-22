@@ -17,6 +17,14 @@ class WarehouseController {
       });
     } catch (error) {}
   }
+
+  getRemovedWh(req, res) {
+    try {
+      InventoryWh.getRemovedWh(req.query, (data) => {
+        res.json(data);
+      });
+    } catch (error) {}
+  }
 }
 
 module.exports = new WarehouseController();

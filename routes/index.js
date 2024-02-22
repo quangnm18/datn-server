@@ -6,8 +6,10 @@ const importListRouter = require("./import");
 const exportWhRouter = require("./export");
 const authenRouter = require("./authen");
 const branchRouter = require("./branch");
+const reportRouter = require("./report");
 
 function route(app) {
+  app.use("/report", reportRouter);
   app.use("/branch", branchRouter);
   app.use("/exportwh", exportWhRouter);
   app.use("/importlist", importListRouter);

@@ -23,6 +23,11 @@ Home.getMedDue = function (data, callback) {
   var date_start = `${data.curr_year}-01-01`;
   var date_to = `${data.curr_year}-12-31`;
 
+  let branch_id = data.branch_id;
+  if (branch_id === null || branch_id === undefined || branch_id === "0") {
+    branch_id = null;
+  }
+
   var datetime =
     currentDate.getFullYear() +
     "-" +
@@ -37,7 +42,7 @@ Home.getMedDue = function (data, callback) {
     currentDate.getSeconds();
 
   db.query(
-    `CALL home_page('${date_start}', '${date_to}', ${data.branch_id}, '${datetime}', @${data.count_due}, @${data.count_neardue}, @${data.count_ok}, @${data.tonggt_nhap}, @${data.tong_ban})`,
+    `CALL home_page('${date_start}', '${date_to}', ${branch_id}, '${datetime}', @${data.count_due}, @${data.count_neardue}, @${data.count_ok}, @${data.tonggt_nhap}, @${data.tong_ban}, @${data.count_rp})`,
     (err, res) => {
       if (err) {
         callback(err);
