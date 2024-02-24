@@ -329,7 +329,7 @@ ImportIv.hardDelIvDetail = function (id, callback) {
 
 ImportIv.updateIvDetail = function (data, callback) {
   db.query(
-    `UPDATE ipt_detail SET han_dung='${data.han_dung}', so_lo='${data.so_lo}', giaban_daqd=${data.giaban} WHERE id=${data.id}`,
+    `UPDATE ipt_detail SET han_dung='${data.han_dung}', so_lo='${data.so_lo}', giaban_daqd=${data.giaban}, dong_goi='${data.dong_goi}' WHERE id=${data.id}`,
     (err, res) => {
       if (err) {
         callback(err);
